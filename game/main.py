@@ -113,7 +113,7 @@ class Main(ShowBase, FSM):
         # BASIC APPLICATION CONFIGURATIONS
         #
         # disable pandas default camera driver
-        self.disableMouse()
+        #self.disableMouse()
         helper.show_cursor()
         # set background color to black
         self.setBackgroundColor(0, 0, 0)
@@ -303,3 +303,4 @@ class Main(ShowBase, FSM):
 
 Game = Main()
 Game.run()
+

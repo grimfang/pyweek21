@@ -7,6 +7,7 @@ from direct.fsm.FSM import FSM
 
 # Game imports
 from core import helper
+from worlds.dev_level import DevLevel
 
 __author__ = "Fireclaw the Fox"
 __license__ = """
@@ -20,6 +21,8 @@ class World(DirectObject, FSM):
         helper.hide_cursor()
 
         #TODO: Add game world logic
+        self.devLevel = DevLevel()
+        print render.ls()
 
     def stop(self):
         """Stop all game components and ignores all events"""
