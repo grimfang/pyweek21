@@ -8,6 +8,7 @@ from direct.fsm.FSM import FSM
 # Game imports
 from core import helper
 from worlds.dev_level import DevLevel
+from player.Player import Player
 
 __author__ = "Fireclaw the Fox"
 __license__ = """
@@ -20,20 +21,28 @@ class World(DirectObject, FSM):
         FSM.__init__(self, "FSM-World")
         helper.hide_cursor()
 
-        #TODO: Add game world logic
         self.devLevel = DevLevel()
         print render.ls()
+
+        self.player = Player(base.cTrav)
+
+    def start(self):
+        self.request("Main")
 
     def stop(self):
         """Stop all game components and ignores all events"""
         helper.show_cursor()
+        self.player.stopPlayer()
         self.ignoreAll()
 
     def enterMain(self):
         """Main state of the world."""
-        helper.hide_cursor()
         print _("Enter World")
+        helper.hide_cursor()
+        self.player.startPlayer()
+        print self.player
 
     def exitMain(self):
-        helper.show_cursor()
         print _("Exit World")
+        helper.show_cursor()
+        self.player.pausePlayer()

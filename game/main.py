@@ -23,7 +23,8 @@ from panda3d.core import (
     MultiplexStream,
     Notify,
     Filename,
-    VirtualFileSystem)
+    VirtualFileSystem,
+    CollisionTraverser,)
 
 # Game imports
 from core import helper
@@ -113,7 +114,7 @@ class Main(ShowBase, FSM):
         # BASIC APPLICATION CONFIGURATIONS
         #
         # disable pandas default camera driver
-        #self.disableMouse()
+        self.disableMouse()
         helper.show_cursor()
         # set background color to black
         self.setBackgroundColor(0, 0, 0)
@@ -184,6 +185,9 @@ class Main(ShowBase, FSM):
         # initialize game content
         #
         self.mainmenu = Mainmenu()
+        # collision setup
+        base.cTrav = CollisionTraverser("base collision traverser")
+        base.cTrav.setRespectPrevTransform(True)
 
         #
         # Event handling
@@ -215,6 +219,7 @@ class Main(ShowBase, FSM):
         # main game code should be called here
         print _("Enter Game")
         self.world = World()
+        self.world.start()
 
     def exitGame(self):
         # cleanup for game code
