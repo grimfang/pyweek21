@@ -5,13 +5,15 @@ from panda3d.core import (
     CollisionTraverser,
     CollisionHandlerQueue,
     CollisionHandlerPusher,
+    CollisionHandlerFloor,
     CollisionNode,
     CollisionSphere,
     CollisionSegment,
+    CollisionRay,
     Point3,
     Vec3,
     NodePath,
-    BitMask32
+    BitMask32,
     )
 from panda3d.physics import (
     PhysicsCollisionHandler,
@@ -30,27 +32,39 @@ See License.txt or http://opensource.org/licenses/BSD-2-Clause for more info
 class Physics:
     def __init__(self):
         self.rayCTrav = CollisionTraverser("collision traverser for ray tests")
-        self.physics_pusher = PhysicsCollisionHandler()
-        self.physics_pusher.addInPattern('%fn-in-%in')
-        self.physics_pusher.addOutPattern('%fn-out-%in')
-        self.physics_pusher.addInPattern('%fn-in')
-        self.physics_pusher.addOutPattern('%fn-out')
+        #self.pusher = PhysicsCollisionHandler()
+        self.pusher = CollisionHandlerPusher()
+        self.pusher.addInPattern('%fn-in-%in')
+        self.pusher.addOutPattern('%fn-out-%in')
+        self.pusher.addInPattern('%fn-in')
+        self.pusher.addOutPattern('%fn-out')
 
     def startPhysics(self):
-        self.actorNode = ActorNode("playerPhysicsControler")
-        base.physicsMgr.attachPhysicalNode(self.actorNode)
-        self.actorNode.getPhysicsObject().setMass(self.player_mass)
-        self.mainNode = render.attachNewNode(self.actorNode)
+        #self.actorNode = ActorNode("playerPhysicsControler")
+        #base.physicsMgr.attachPhysicalNode(self.actorNode)
+        #self.actorNode.getPhysicsObject().setMass(self.player_mass)
+        #self.mainNode = render.attachNewNode(self.actorNode)
+        self.mainNode = render.attachNewNode("CharacterColliders")
         self.reparentTo(self.mainNode)
 
         charCollisions = self.mainNode.attachNewNode(CollisionNode(self.char_collision_name))
-        charCollisions.node().addSolid(CollisionSphere(0, 0, self.player_height/4.0, self.player_height/4.0))
-        charCollisions.node().addSolid(CollisionSphere(0, 0, self.player_height/4.0*3.05, self.player_height/4.0))
+        #charCollisions.node().addSolid(CollisionSphere(0, 0, self.player_height/4.0, self.player_height/4.0))
+        #charCollisions.node().addSolid(CollisionSphere(0, 0, self.player_height/4.0*3.05, self.player_height/4.0))
+        charCollisions.node().addSolid(CollisionSphere(0, 0, self.player_height/2.0, self.player_height/4.0))
         charCollisions.node().setIntoCollideMask(BitMask32(0x80))  # 1000 0000
         if self.show_collisions:
             charCollisions.show()
-        self.physics_pusher.addCollider(charCollisions, self.mainNode)
-        base.cTrav.addCollider(charCollisions, self.physics_pusher)
+        self.pusher.addCollider(charCollisions, self.mainNode)
+        base.cTrav.addCollider(charCollisions, self.pusher)
+
+        charFFootCollisions = self.attachNewNode(CollisionNode("floor_ray"))
+        #charFFootCollisions.node().addSolid(CollisionSegment((0,0,0), (0, 0, -2)))
+        charFFootCollisions.node().addSolid(CollisionRay(0, 0, 0, 0, 0, -1))
+        charFFootCollisions.show()
+
+        self.floor_handler = CollisionHandlerFloor()
+        self.floor_handler.addCollider(charFFootCollisions, self.mainNode)
+        base.cTrav.addCollider(charFFootCollisions, self.floor_handler)
 
         self.accept("{}-in".format(self.char_collision_name), self.checkCharCollisions)
 
@@ -66,7 +80,8 @@ class Physics:
 
     def stopPhysics(self):
         self.raytest_segment.removeNode()
-        self.physics_pusher.clearColliders()
+        self.pusher.clearColliders()
+        self.floor_handler.clearColliders()
         self.rayCTrav.clearColliders()
 
     def updatePlayerPos(self, speed, heading, dt):

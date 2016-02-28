@@ -52,6 +52,12 @@ class DevLevel():
 
         self.devLevel.setPos(0, 0, -2)
 
+    def getStartPoint(self):
+        startPosNode = self.devLevel.find("**/StartPos")
+        if startPosNode:
+            return startPosNode
+        return None
+
     def skyboxTask(self, task):
         self.skybox.setHpr(render, 0, 0, 0)
         return task.cont

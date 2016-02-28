@@ -26,6 +26,10 @@ from panda3d.core import (
     VirtualFileSystem,
     CollisionTraverser,)
 
+from panda3d.physics import (
+    ForceNode,
+    LinearVectorForce,)
+
 # Game imports
 from core import helper
 from gui.mainmenu import Mainmenu
@@ -131,10 +135,6 @@ class Main(ShowBase, FSM):
             self.disableAllAudio()
         else:
             self.enableAllAudio()
-        # check if particles should be enabled
-        particles = ConfigVariableBool("particles-enabled", True).getValue()
-        if particles:
-            self.enableParticles()
 
         def setFullscreen():
             """Helper function to set the window fullscreen
@@ -188,6 +188,14 @@ class Main(ShowBase, FSM):
         # collision setup
         base.cTrav = CollisionTraverser("base collision traverser")
         base.cTrav.setRespectPrevTransform(True)
+        # setup default physics
+        base.enableParticles()
+        """# setup the gravity
+        gravityFN = ForceNode("world-forces")
+        gravityFNP = render.attachNewNode(gravityFN)
+        gravityForce = LinearVectorForce(0, 0, -9.81)  # gravity acceleration
+        gravityFN.addForce(gravityForce)
+        base.physicsMgr.addLinearForce(gravityForce)"""
 
         #
         # Event handling
@@ -250,11 +258,10 @@ class Main(ShowBase, FSM):
         create one. The prc file is set in the prcFile variable"""
         page = None
 
-        particles = "#f" if not base.particleMgrEnabled else "#t"
         volume = str(round(base.musicManager.getVolume(), 2))
         mute = "#f" if base.AppHasAudioFocus else "#t"
         customConfigVariables = [
-            "", "particles-enabled", "audio-mute", "audio-volume"]
+            "", "audio-mute", "audio-volume"]
         if os.path.exists(prcFile):
             # open the config file and change values according to current
             # application settings
@@ -269,10 +276,8 @@ class Main(ShowBase, FSM):
                     removeDecls.append(decl)
             for dec in removeDecls:
                 page.deleteDeclaration(dec)
-            # NOTE: particles-enabled and audio-mute are custom variables and
+            # NOTE: audio-mute are custom variables and
             #       have to be loaded by hand at startup
-            # Particles
-            page.makeDeclaration("particles-enabled", particles)
             # audio
             page.makeDeclaration("audio-volume", volume)
             page.makeDeclaration("audio-mute", mute)
@@ -289,8 +294,6 @@ class Main(ShowBase, FSM):
             page.makeDeclaration("win-size", "%d %d"%(w, h))
             # set the default to fullscreen in the config file
             page.makeDeclaration("fullscreen", "1")
-            # particles
-            page.makeDeclaration("particles-enabled", "#t")
             # audio
             page.makeDeclaration("audio-volume", volume)
             page.makeDeclaration("audio-mute", "#f")

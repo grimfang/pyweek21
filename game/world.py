@@ -40,7 +40,10 @@ class World(DirectObject, FSM):
         print _("Enter World")
         helper.hide_cursor()
         self.player.startPlayer()
-        print self.player
+        startPoint = self.devLevel.getStartPoint()
+        if startPoint is not None:
+            self.player.setStartPos(startPoint.getPos())
+            self.player.setStartHpr(startPoint.getHpr())
 
     def exitMain(self):
         print _("Exit World")

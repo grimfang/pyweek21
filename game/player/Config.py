@@ -91,7 +91,7 @@ class Config:
         # PHYSICS
         #
         # show collision solids
-        self.show_collisions = False
+        self.show_collisions = True
         # The physical physic_world which will be responsible for collision checks and
         # physic updates
         self.physic_world = None
