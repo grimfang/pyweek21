@@ -9,7 +9,6 @@ import logging
 import gettext
 
 # Panda3D imoprts
-#from pandac.PandaModules import loadPrcFileData
 from direct.showbase.ShowBase import ShowBase
 from direct.fsm.FSM import FSM
 from panda3d.core import (
