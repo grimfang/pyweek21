@@ -12,8 +12,9 @@ from panda3d.core import (
 from panda3d.core import Plane, PlaneNode, TransparencyAttrib, Texture, Vec3, Point3, NodePath, TextureStage, CullFaceAttrib, BitMask32
 
 # Game imports
+from seed.seed import Seed
 
-__author__ = "MJ-meo-dmt"
+__author__ = "MJ-meo-dmt & Fireclaw the Fox"
 __license__ = """
 Simplified BSD (BSD 2-Clause) License.
 See License.txt or http://opensource.org/licenses/BSD-2-Clause for more info
@@ -53,6 +54,9 @@ class Level():
 
         self.level.setPos(0, 0, -2)
 
+        # Debug
+        self.getMapSize()
+
     def stop(self):
         self.level.clearLight()
         self.level.removeNode()
@@ -70,3 +74,9 @@ class Level():
     def skyboxTask(self, task):
         self.skybox.setHpr(render, 0, 0, 0)
         return task.cont
+
+    def spawnSeeds(self, numOfSeeds):
+        pass
+
+    def getMapSize(self):
+        print self.level.getScale()
