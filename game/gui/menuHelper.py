@@ -15,19 +15,20 @@ See License.txt or http://opensource.org/licenses/BSD-2-Clause for more info
 
 
 def createButton(text, btnGeom, xPos, yPos, args):
-    buttonSize = (-1.15, 1.15, 0.50, -0.25)
+    buttonSize = (-2, 2, 1, -1)
     btn = DirectButton(
         scale=0.25,
+        geom=btnGeom,
         # some temp text
         text=text,
-        text_scale=0.5,
+        text_scale=0.4,
         # set the alignment to right
         text_align=TextNode.ACenter,
         # set the text color to black
-        text_fg=(0, 0, 0, 1),
+        text_fg=(1, 1, 1, 1),
         # set the buttons images
         relief=1,
-        frameColor=(0,0,1,1),
+        frameColor=(0,0,0,0),
         frameSize=buttonSize,
         pressEffect=False,
         pos=(xPos, 0, yPos),
