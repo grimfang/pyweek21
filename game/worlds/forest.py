@@ -54,8 +54,10 @@ class Level():
 
         self.level.setPos(0, 0, -2)
 
-        # Debug
-        self.getMapSize()
+        ## Seeds ##
+        self.tutorialSeed = None
+        self.seedSpawnPositions = []
+
 
     def stop(self):
         self.level.clearLight()
@@ -78,5 +80,6 @@ class Level():
     def spawnSeeds(self, numOfSeeds):
         pass
 
-    def getMapSize(self):
-        print self.level.getScale()
+    def getSeedSpawnPoints(self):
+        self.seedSpawnPositions = self.level.findAllMatches("**/PlantSeed")
+
