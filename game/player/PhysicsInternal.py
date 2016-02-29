@@ -58,9 +58,8 @@ class Physics:
         base.cTrav.addCollider(charCollisions, self.pusher)
 
         charFFootCollisions = self.attachNewNode(CollisionNode("floor_ray"))
-        #charFFootCollisions.node().addSolid(CollisionSegment((0,0,0), (0, 0, -2)))
         charFFootCollisions.node().addSolid(CollisionRay(0, 0, 0, 0, 0, -1))
-        #charFFootCollisions.node().setIntoCollideMask(BitMask32(0x80))  # 1000 0000
+        charFFootCollisions.node().setIntoCollideMask(BitMask32.allOff())
         charFFootCollisions.node().setFromCollideMask(BitMask32(0x7f))  # 0111 1111
         charFFootCollisions.show()
 
@@ -73,6 +72,7 @@ class Physics:
         self.raytest_segment = CollisionSegment(0, 1)
         self.raytest_np = render.attachNewNode(CollisionNode("testRay"))
         self.raytest_np.node().addSolid(self.raytest_segment)
+        self.raytest_np.node().setIntoCollideMask(BitMask32.allOff())
         self.raytest_np.node().setFromCollideMask(BitMask32(0x7f))  # 0111 1111
         if self.show_collisions:
             self.raytest_np.show()
