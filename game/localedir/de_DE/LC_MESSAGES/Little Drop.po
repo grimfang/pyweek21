@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-02-28 02:44+0100\n"
-"PO-Revision-Date: 2016-02-28 02:45+0100\n"
+"POT-Creation-Date: 2016-02-29 17:31+0100\n"
+"PO-Revision-Date: 2016-02-29 17:33+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -16,30 +16,62 @@ msgstr ""
 "Generated-By: pygettext.py 1.5\n"
 "X-Generator: Poedit 1.8.4\n"
 
-#: gui/mainmenu.py:19
+#: gui/hud.py:19
+msgid "Plant Seed"
+msgstr "Pflanze Samen"
+
+#: gui/hud.py:31 gui/hud.py:58
+msgid "Points: %d"
+msgstr "Punkte: %d"
+
+#: gui/hud.py:42 gui/hud.py:61
+msgid "Remaining Water: %d"
+msgstr "Vorhandenes Wasser: %d"
+
+#: gui/mainmenu.py:21
 msgid "Start"
 msgstr "Start"
 
-#: gui/mainmenu.py:22
+#: gui/mainmenu.py:24
 msgid "Options"
 msgstr "Optionen"
 
-#: gui/mainmenu.py:25
+#: gui/mainmenu.py:27
 msgid "Quit"
 msgstr "Beenden"
 
-#: main.py:216
+#: gui/optionsmenu.py:38
+msgid "Back"
+msgstr "Zurück"
+
+#: gui/optionsmenu.py:48 gui/optionsmenu.py:113
+msgid "Volume %d%%"
+msgstr "Lautstärke %d%%"
+
+#: gui/optionsmenu.py:67
+msgid "Mute Audio"
+msgstr "Stumm schalten"
+
+#: gui/optionsmenu.py:88
+msgid ""
+"Advanced options can be made in the following text file\n"
+"%s"
+msgstr ""
+"Erweiterte Einstellungen können in folgender Textdatei gemacht werden\n"
+"%s"
+
+#: main.py:244
 msgid "Enter Game"
 msgstr "Betrete Spiel"
 
-#: main.py:221
+#: main.py:252
 msgid "Exit Game"
 msgstr "Verlasse Spiel"
 
-#: world.py:32
+#: world.py:109
 msgid "Enter World"
 msgstr "Betrete Welt"
 
-#: world.py:36
+#: world.py:121
 msgid "Exit World"
 msgstr "Verlasse Welt"

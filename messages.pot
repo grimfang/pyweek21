@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2016-02-28 02:44+CET\n"
+"POT-Creation-Date: 2016-02-29 17:31+CET\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,31 +15,61 @@ msgstr ""
 "Generated-By: pygettext.py 1.5\n"
 
 
-#: ./gui/mainmenu.py:19
+#: ./gui/hud.py:19
+msgid "Plant Seed"
+msgstr ""
+
+#: ./gui/hud.py:31 ./gui/hud.py:58
+msgid "Points: %d"
+msgstr ""
+
+#: ./gui/hud.py:42 ./gui/hud.py:61
+msgid "Remaining Water: %d"
+msgstr ""
+
+#: ./gui/mainmenu.py:21
 msgid "Start"
 msgstr ""
 
-#: ./gui/mainmenu.py:22
+#: ./gui/mainmenu.py:24
 msgid "Options"
 msgstr ""
 
-#: ./gui/mainmenu.py:25
+#: ./gui/mainmenu.py:27
 msgid "Quit"
 msgstr ""
 
-#: ./main.py:216
+#: ./gui/optionsmenu.py:38
+msgid "Back"
+msgstr ""
+
+#: ./gui/optionsmenu.py:48 ./gui/optionsmenu.py:113
+msgid "Volume %d%%"
+msgstr ""
+
+#: ./gui/optionsmenu.py:67
+msgid "Mute Audio"
+msgstr ""
+
+#: ./gui/optionsmenu.py:88
+msgid ""
+"Advanced options can be made in the following text file\n"
+"%s"
+msgstr ""
+
+#: ./main.py:244
 msgid "Enter Game"
 msgstr ""
 
-#: ./main.py:221
+#: ./main.py:252
 msgid "Exit Game"
 msgstr ""
 
-#: ./world.py:32
+#: ./world.py:109
 msgid "Enter World"
 msgstr ""
 
-#: ./world.py:36
+#: ./world.py:121
 msgid "Exit World"
 msgstr ""
 

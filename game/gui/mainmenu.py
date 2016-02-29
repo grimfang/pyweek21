@@ -27,6 +27,8 @@ class Mainmenu():
         self.btnQuit = menuHelper.createButton(_("Quit"), btnGeom, 1.0, -0.5, ["menu_quit"])
         self.btnQuit.reparentTo(self.frameMain)
 
+        self.hide()
+
     def show(self):
         self.frameMain.show()
 
