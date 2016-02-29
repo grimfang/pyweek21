@@ -1,5 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+# Python Import
+import random
 
 # Panda3D imoprts
 from panda3d.core import (
@@ -13,8 +15,9 @@ from panda3d.core import Plane, PlaneNode, TransparencyAttrib, Texture, Vec3, Po
 from direct.actor.Actor import Actor
 
 # Game imports
+from seed.seed import Seed
 
-__author__ = "MJ-meo-dmt"
+__author__ = "MJ-meo-dmt & Fireclaw the Fox"
 __license__ = """
 Simplified BSD (BSD 2-Clause) License.
 See License.txt or http://opensource.org/licenses/BSD-2-Clause for more info
@@ -66,7 +69,16 @@ class Level():
             npc.reparentTo(point)
             self.npcList.append(npc)
 
+        ## Seeds ##
+        self.numSeedPositions = 20
+        self.tutorialSeed = None
+        self.spawnedSeeds = {}
+
+        self.spawnSeeds(7)
+
+
     def stop(self):
+        self.clearSeeds()
         self.level.clearLight()
         self.level.removeNode()
         render.clearLight()
@@ -78,6 +90,15 @@ class Level():
             npc.removeNode()
         self.npcList = None
 
+    def clearSeeds(self):
+        # Fireclaw just check these and make nicer if needed
+        for seed in self.spawnedSeeds:
+            self.spawnedSeeds[seed].Destroy()
+
+        self.tutorialSeed.Destroy()
+        self.seedSpawnPositions = []
+        self.spawnedSeeds = {}
+
     def getStartPoint(self):
         startPosNode = self.level.find("**/StartPos")
         if startPosNode:
@@ -87,3 +108,31 @@ class Level():
     def skyboxTask(self, task):
         self.skybox.setHpr(render, 0, 0, 0)
         return task.cont
+
+    def spawnSeeds(self, numOfSeeds):
+        self.seedSpawnPositions = self.getSeedSpawnPoints()
+
+        for idx in range(numOfSeeds):
+
+            if idx == 0:
+                spawnPos = self.seedSpawnPositions[0]
+                self.spawnedSeeds[spawnPos.getName()] = Seed()
+                self.spawnedSeeds[spawnPos.getName()].OnSpawn(spawnPos.getPos())
+                self.tutorialSeed = self.spawnedSeeds[spawnPos.getName()]
+
+            else:
+                randPos = random.randint(1, len(self.seedSpawnPositions)-1)
+
+                spawnPos = self.seedSpawnPositions[randPos]
+                self.spawnedSeeds[spawnPos.getName()] = Seed()
+                self.spawnedSeeds[spawnPos.getName()].OnSpawn(spawnPos.getPos())
+
+
+    def getSeedSpawnPoints(self):
+        points = []
+        for idx in range(self.numSeedPositions):
+            points.append(self.level.find("**/SeedPos.%03d"%idx))
+
+        return points
+
+
