@@ -449,7 +449,6 @@
     }
   }
   <Group> PlantGround {
-    <Collide> { Polyset keep descend }
     <Transform> {
       <Matrix4> {
         1.0 0.0 0.0 0.0 

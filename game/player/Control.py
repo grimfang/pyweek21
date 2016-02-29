@@ -95,7 +95,7 @@ class Control:
         else:
             self.setCurrentAnimsPlayRate(self.current_accleration/self.max_accleration)
 
-        if self.isDown(self.key_plant):
+        if self.isDown(self.key_plant) and self.planting_enabled:
             if self.STATE_PLANT in self.defaultTransitions[self.state]:
                 self.doPlant()
                 self.current_accleration = 0.0

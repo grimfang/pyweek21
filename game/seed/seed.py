@@ -15,7 +15,7 @@ See License.txt or http://opensource.org/licenses/BSD-2-Clause for more info
 class Seed():
     def __init__(self):
 
-    	self.id = 'seed'
+    	self.id = "seed" + str(id(self))
     	self.seed = None
     	self.cnodePath = None
 
@@ -30,15 +30,16 @@ class Seed():
 
     	# Collision body
     	cs = CollisionSphere(0, 0, 0, 0.4)
-    	self.cnodePath = self.seed.attachNewNode(CollisionNode('collisionSphere'))
+        cs.setTangible(False)
+    	self.cnodePath = self.seed.attachNewNode(CollisionNode("seedSphere-" + self.id))
     	self.cnodePath.node().addSolid(cs)
-    	self.cnodePath.setCollideMask(BitMask32.bit(5))
+        self.cnodePath.node().setIntoCollideMask(BitMask32(0x80))  # 1000 0000
 
     	self.cnodePath.show()
 
     def OnPickup(self):
     	# When the player touches the object "seed"
-    	pass
+        print "PICKUP SEED"
 
     def SetParent(self, newParent):
     	if self.seed != None:

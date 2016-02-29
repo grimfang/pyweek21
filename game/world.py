@@ -18,6 +18,7 @@ from direct.interval.IntervalGlobal import Sequence
 from core import helper
 from worlds.forest import Level
 from player.Player import Player
+from gui.hud import HUD
 
 __author__ = "Fireclaw the Fox"
 __license__ = """
@@ -31,9 +32,11 @@ class World(DirectObject, FSM):
         helper.hide_cursor()
 
         self.player = Player(base.cTrav)
+        self.hud = HUD()
 
         cm = CardMaker("FadableCard")
         cm.setFrame(-1, 1, -1, 1)
+        self.tutorial1Shown = False
         self.tutorial1 = NodePath(cm.generate())
         self.tutorial1.setTransparency(TransparencyAttrib.MAlpha)
         self.tutorial1Tex = loader.loadTexture("gui/tutorial.png")
@@ -59,6 +62,9 @@ class World(DirectObject, FSM):
             Func(self.tutorial1.hide))
 
         self.accept("CharacterCollisions-in-tutorial1", self.showTutorial)
+        self.accept("CharacterCollisions-in-PlantGroundCollider", self.enablePlanting)
+        self.accept("CharacterCollisions-out-PlantGroundCollider", self.disablePlanting)
+        self.accept("CharacterCollisions-in", self.checkCollisions)
 
     def start(self):
         self.request("Main")
@@ -71,10 +77,32 @@ class World(DirectObject, FSM):
         self.ignoreAll()
         self.tutorialInterval.finish()
         self.tutorial1.removeNode()
+        self.hud.cleanup()
 
     def showTutorial(self, args):
+        if self.tutorial1Shown == False:
+            self.tutorial1Shown = True
+        else:
+            return
         if not self.tutorialInterval.isPlaying():
             self.tutorialInterval.start()
+
+    def checkCollisions(self, args):
+        if "seedSphere" in args.getIntoNode().getName():
+            self.doPickupSeed(args)
+
+    def enablePlanting(self, args):
+        self.currentPlantingGround = args
+        self.player.enablePlanting(True)
+        self.hud.showCanPlant()
+
+    def disablePlanting(self, args):
+        self.player.enablePlanting(False)
+        self.hud.hideCanPlant()
+
+    def doPickupSeed(self, args):
+        self.player.doPickupSeed(args)
+        self.level.doPickupSeed(args)
 
     def enterMain(self):
         """Main state of the world."""

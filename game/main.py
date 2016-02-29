@@ -188,9 +188,7 @@ class Main(ShowBase, FSM):
 
         # Menus
         self.mainmenu = Mainmenu()
-        self.mainmenu.hide()
         self.optionsmenu = Optionsmenu()
-        self.optionsmenu.hide()
 
         # collision setup
         base.cTrav = CollisionTraverser("base collision traverser")

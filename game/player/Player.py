@@ -159,8 +159,12 @@ class Player(FSM, Config, Physics, Actor, Camera, Control, Animator):
     def setStartHpr(self, startHpr):
         self.mainNode.setHpr(startHpr)
 
+    def enablePlanting(self, enabled):
+        self.planting_enabled = enabled
+
     def doPlant(self):
         base.messenger.send("player-plant_seed")
 
-    def doPickupSeed(self):
-        base.messenger.send("player-pickup_seed")
+    def doPickupSeed(self, args):
+        pass
+        #print args

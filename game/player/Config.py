@@ -37,6 +37,7 @@ class Config:
         self.walk_sound = loader.loadSfx(self.sfxPath + "step.ogg")
         self.walk_sound.setLoop(True)
 
+
         #
         # CONTROLS
         #
@@ -54,6 +55,8 @@ class Config:
         self.max_accleration = 8.0
         # the speed for how fast the player is generally moving
         self.speed = 0.7
+        # planting possibility
+        self.planting_enabled = False
 
         #
         # CAMERA CONTROL VARIABLES

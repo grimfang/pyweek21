@@ -91,7 +91,6 @@ class Level():
         self.npcList = None
 
     def clearSeeds(self):
-        # Fireclaw just check these and make nicer if needed
         for seed in self.spawnedSeeds:
             self.spawnedSeeds[seed].Destroy()
 
@@ -127,7 +126,6 @@ class Level():
                 self.spawnedSeeds[spawnPos.getName()] = Seed()
                 self.spawnedSeeds[spawnPos.getName()].OnSpawn(spawnPos.getPos())
 
-
     def getSeedSpawnPoints(self):
         points = []
         for idx in range(self.numSeedPositions):
@@ -135,4 +133,6 @@ class Level():
 
         return points
 
-
+    def doPickupSeed(self, args):
+        print args
+        #TODO: MJ-meo-dmt add functionality to the seed pickup
