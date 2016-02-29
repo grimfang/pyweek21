@@ -24,7 +24,8 @@ from panda3d.core import (
     Notify,
     Filename,
     VirtualFileSystem,
-    CollisionTraverser,)
+    CollisionTraverser,
+    AudioSound,)
 
 from panda3d.physics import (
     ForceNode,
@@ -33,6 +34,7 @@ from panda3d.physics import (
 # Game imports
 from core import helper
 from gui.mainmenu import Mainmenu
+from gui.optionsmenu import Optionsmenu
 from world import World
 
 __author__ = "Fireclaw the Fox"
@@ -184,12 +186,23 @@ class Main(ShowBase, FSM):
         #
         # initialize game content
         #
+
+        # Menus
         self.mainmenu = Mainmenu()
+        self.mainmenu.hide()
+        self.optionsmenu = Optionsmenu()
+        self.optionsmenu.hide()
+
         # collision setup
         base.cTrav = CollisionTraverser("base collision traverser")
         base.cTrav.setRespectPrevTransform(True)
         # setup default physics
         base.enableParticles()
+
+        self.music_menu = loader.loadMusic("music/menu.ogg")
+        self.music_menu.setLoop(True)
+        self.music_game = loader.loadMusic("music/game.ogg")
+        self.music_game.setLoop(True)
 
         #
         # Event handling
@@ -199,6 +212,7 @@ class Main(ShowBase, FSM):
         self.accept("menu_start", self.request, ["Game"])
         self.accept("menu_options", self.request, ["Options"])
         self.accept("menu_quit", self.quit)
+        self.accept("options_back", self.request, ["Menu"])
 
         #
         # Start with the menu
@@ -212,14 +226,27 @@ class Main(ShowBase, FSM):
     def enterMenu(self):
         """Enter the main menu state"""
         self.mainmenu.show()
+        if self.music_menu.status() != AudioSound.PLAYING:
+            self.music_menu.play()
 
     def exitMenu(self):
         """Leave the main menu state"""
         self.mainmenu.hide()
 
+
+    def enterOptions(self):
+        """Enter the options menu state"""
+        self.optionsmenu.show()
+
+    def exitOptions(self):
+        """Leave the options menu state"""
+        self.optionsmenu.hide()
+
     def enterGame(self):
         # main game code should be called here
         print _("Enter Game")
+        self.music_menu.stop()
+        self.music_game.play()
         self.world = World()
         self.world.start()
 

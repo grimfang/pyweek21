@@ -58,6 +58,7 @@ class Animator:
             if anim in self.skipPlayRateChanges:
                 continue
             self.setPlayRate(rate, anim)
+        self.walk_sound.setPlayRate(rate)
 
     def tryRequest(self, state):
         if not self.isInTransition():
@@ -66,17 +67,20 @@ class Animator:
 
     def enterIdle(self):
         self.current_animations = [self.IDLE]
+        self.walk_sound.stop()
         if not self.getCurrentAnim() == self.IDLE:
             self.loop(self.IDLE)
 
     def enterWalk(self):
         self.current_animations = [self.WALK]
+        self.walk_sound.play()
         if not self.getCurrentAnim() == self.WALK:
             self.loop(self.WALK)
 
     def enterIdleToWalk(self):
         self.current_animations = [self.IDLE, self.WALK]
         self.ease_out_idle.duration = self.enterWalkDuration
+        self.walk_sound.play()
         self.current_seq = Sequence(
             Func(self.enableBlend),
             Func(self.loop, self.WALK),
@@ -96,6 +100,7 @@ class Animator:
         self.current_animations = [self.WALK, self.IDLE]
         self.ease_out_walk.duration = self.current_accleration/self.max_accleration
         self.ease_in_idle.duration = self.current_accleration/self.max_accleration
+        self.walk_sound.play()
         self.current_seq = Sequence(
             Func(self.enableBlend),
             Func(self.loop, self.IDLE),

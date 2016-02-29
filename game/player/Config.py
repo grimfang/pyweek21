@@ -31,6 +31,13 @@ class Config:
         self.enable_interpolation = True
 
         #
+        # AUDIO
+        #
+        self.sfxPath = "sfx/"
+        self.walk_sound = loader.loadSfx(self.sfxPath + "step.ogg")
+        self.walk_sound.setLoop(True)
+
+        #
         # CONTROLS
         #
         self.key_forward = KeyboardButton.asciiKey('w')

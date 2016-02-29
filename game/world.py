@@ -7,7 +7,7 @@ from direct.fsm.FSM import FSM
 
 # Game imports
 from core import helper
-from worlds.dev_level import DevLevel
+from worlds.forest import Level
 from player.Player import Player
 
 __author__ = "Fireclaw the Fox"
@@ -21,9 +21,6 @@ class World(DirectObject, FSM):
         FSM.__init__(self, "FSM-World")
         helper.hide_cursor()
 
-        self.devLevel = DevLevel()
-        print render.ls()
-
         self.player = Player(base.cTrav)
 
     def start(self):
@@ -32,6 +29,7 @@ class World(DirectObject, FSM):
     def stop(self):
         """Stop all game components and ignores all events"""
         helper.show_cursor()
+        self.request("Quit")
         self.player.stopPlayer()
         self.ignoreAll()
 
@@ -39,8 +37,9 @@ class World(DirectObject, FSM):
         """Main state of the world."""
         print _("Enter World")
         helper.hide_cursor()
+        self.level = Level()
         self.player.startPlayer()
-        startPoint = self.devLevel.getStartPoint()
+        startPoint = self.level.getStartPoint()
         if startPoint is not None:
             self.player.setStartPos(startPoint.getPos())
             self.player.setStartHpr(startPoint.getHpr())
@@ -51,3 +50,5 @@ class World(DirectObject, FSM):
         print _("Exit World")
         helper.show_cursor()
         self.player.pausePlayer()
+        self.level.stop()
+        del self.level

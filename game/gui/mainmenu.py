@@ -16,7 +16,6 @@ class Mainmenu():
             frameColor=(0,0,0,0))
         self.frameMain.setTransparency(True)
 
-        #TODO: Load the buttons geometry
         btnGeom = "gui/button"
 
         self.btnStart = menuHelper.createButton(_("Start"), btnGeom, 0, -0.5, ["menu_start"])
