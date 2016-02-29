@@ -4,6 +4,15 @@
 # Panda3D imoprts
 from direct.showbase.DirectObject import DirectObject
 from direct.fsm.FSM import FSM
+from panda3d.core import (
+    CardMaker,
+    NodePath,
+    TransparencyAttrib,
+    TextureStage,)
+from direct.interval.FunctionInterval import (
+    Wait,
+    Func)
+from direct.interval.IntervalGlobal import Sequence
 
 # Game imports
 from core import helper
@@ -23,6 +32,34 @@ class World(DirectObject, FSM):
 
         self.player = Player(base.cTrav)
 
+        cm = CardMaker("FadableCard")
+        cm.setFrame(-1, 1, -1, 1)
+        self.tutorial1 = NodePath(cm.generate())
+        self.tutorial1.setTransparency(TransparencyAttrib.MAlpha)
+        self.tutorial1Tex = loader.loadTexture("gui/tutorial.png")
+        self.tutorial1Ts = TextureStage("ts-tutorial1")
+        self.tutorial1Ts.setMode(TextureStage.MReplace)
+        self.tutorial1.setTexture(self.tutorial1Ts, self.tutorial1Tex)
+        self.tutorial1.reparentTo(render2d)
+        self.tutorial1.setScale(0.5)
+        self.tutorial1.setPos(0, 0, 0.25)
+        self.tutorial1.hide()
+
+        self.tutorialInterval = Sequence(
+            Func(self.tutorial1.show),
+            self.tutorial1.colorScaleInterval(
+                1.5,
+                (0,0,0,1),
+                (0,0,0,0)),
+            Wait(3.0),
+            self.tutorial1.colorScaleInterval(
+                1.5,
+                (0,0,0,0),
+                (0,0,0,1)),
+            Func(self.tutorial1.hide))
+
+        self.accept("CharacterCollisions-in-tutorial1", self.showTutorial)
+
     def start(self):
         self.request("Main")
 
@@ -32,6 +69,12 @@ class World(DirectObject, FSM):
         self.request("Quit")
         self.player.stopPlayer()
         self.ignoreAll()
+        self.tutorialInterval.finish()
+        self.tutorial1.removeNode()
+
+    def showTutorial(self, args):
+        if not self.tutorialInterval.isPlaying():
+            self.tutorialInterval.start()
 
     def enterMain(self):
         """Main state of the world."""

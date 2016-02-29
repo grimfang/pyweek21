@@ -10,6 +10,7 @@ from panda3d.core import (
     Fog,)
 
 from panda3d.core import Plane, PlaneNode, TransparencyAttrib, Texture, Vec3, Point3, NodePath, TextureStage, CullFaceAttrib, BitMask32
+from direct.actor.Actor import Actor
 
 # Game imports
 
@@ -53,6 +54,18 @@ class Level():
 
         self.level.setPos(0, 0, -2)
 
+        # spawn NPCs
+        self.npcList = []
+        for i in range(5):
+            npc = Actor(
+                "character/character",
+                {"Idle": "character/character-Idle"})
+            npc.setBlend(frameBlend=True)
+            npc.loop("Idle")
+            point = self.level.find("**/NPC.%03d"%i)
+            npc.reparentTo(point)
+            self.npcList.append(npc)
+
     def stop(self):
         self.level.clearLight()
         self.level.removeNode()
@@ -60,6 +73,10 @@ class Level():
         render.clearFog()
         taskMgr.remove("forestsky")
         self.skybox.removeNode()
+        for npc in self.npcList:
+            npc.cleanup()
+            npc.removeNode()
+        self.npcList = None
 
     def getStartPoint(self):
         startPosNode = self.level.find("**/StartPos")
