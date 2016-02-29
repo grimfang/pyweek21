@@ -1,5 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+# Python Import
+import random
 
 # Panda3D imoprts
 from panda3d.core import (
@@ -55,17 +57,30 @@ class Level():
         self.level.setPos(0, 0, -2)
 
         ## Seeds ##
+        self.numSeedPositions = 20
         self.tutorialSeed = None
-        self.seedSpawnPositions = []
+        self.spawnedSeeds = {}
+
+        self.spawnSeeds(7)
 
 
     def stop(self):
+        self.clearSeeds()
         self.level.clearLight()
         self.level.removeNode()
         render.clearLight()
         render.clearFog()
         taskMgr.remove("forestsky")
         self.skybox.removeNode()
+
+    def clearSeeds(self):
+        # Fireclaw just check these and make nicer if needed
+        for seed in self.spawnedSeeds:
+            self.spawnedSeeds[seed].Destroy()
+
+        self.tutorialSeed.Destroy()
+        self.seedSpawnPositions = []
+        self.spawnedSeeds = {}
 
     def getStartPoint(self):
         startPosNode = self.level.find("**/StartPos")
@@ -78,8 +93,29 @@ class Level():
         return task.cont
 
     def spawnSeeds(self, numOfSeeds):
-        pass
+        self.seedSpawnPositions = self.getSeedSpawnPoints()
+
+        for idx in range(numOfSeeds):
+
+            if idx == 0:
+                spawnPos = self.seedSpawnPositions[0]
+                self.spawnedSeeds[spawnPos.getName()] = Seed()
+                self.spawnedSeeds[spawnPos.getName()].OnSpawn(spawnPos.getPos())
+                self.tutorialSeed = self.spawnedSeeds[spawnPos.getName()]
+
+            else:
+                randPos = random.randint(1, len(self.seedSpawnPositions)-1)
+
+                spawnPos = self.seedSpawnPositions[randPos]
+                self.spawnedSeeds[spawnPos.getName()] = Seed()
+                self.spawnedSeeds[spawnPos.getName()].OnSpawn(spawnPos.getPos())
+
 
     def getSeedSpawnPoints(self):
-        self.seedSpawnPositions = self.level.findAllMatches("**/PlantSeed")
+        points = []
+        for idx in range(self.numSeedPositions):
+            points.append(self.level.find("**/SeedPos.%03d"%idx))
+
+        return points
+
 

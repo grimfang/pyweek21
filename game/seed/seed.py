@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # Panda3D imoprts
+from panda3d.core import CollisionSphere, CollisionNode
 
 # Game imports
 
@@ -16,15 +17,21 @@ class Seed():
 
     	self.id = 'seed'
     	self.seed = None
-    	self.OnSpawn()
 
-
-    def OnSpawn(self):
+    def OnSpawn(self, pos):
     	# Spawn in world (default)
 
     	# Load a model for now its just one.
     	self.seed = loader.loadModel("./assets/seed/seed")
     	self.SetParent(render)
+    	self.seed.setPos(pos)
+
+    	# Collision body
+    	cs = CollisionSphere(0, 0, 0, 0.3)
+    	cnodePath = self.seed.attachNewNode(CollisionNode('collisionSphere'))
+    	cnodePath.node().addSolid(cs)
+
+    	cnodePath.show()
 
     def OnPickup(self):
     	# When the player touches the object "seed"
@@ -35,3 +42,6 @@ class Seed():
     		self.seed.reparentTo(newParent)
     	else:
     		print "No seed object spawned"
+
+    def Destroy(self):
+    	self.seed.removeNode()
