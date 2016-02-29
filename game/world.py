@@ -44,6 +44,8 @@ class World(DirectObject, FSM):
         if startPoint is not None:
             self.player.setStartPos(startPoint.getPos())
             self.player.setStartHpr(startPoint.getHpr())
+        self.player.centerCamera()
+        self.player.centerCamera()
 
     def exitMain(self):
         print _("Exit World")

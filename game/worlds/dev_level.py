@@ -9,6 +9,8 @@ from panda3d.core import (
     CullBinAttrib,
     Fog,)
 
+from panda3d.core import Plane, PlaneNode, TransparencyAttrib, Texture, Vec3, Point3, NodePath, TextureStage, CullFaceAttrib, BitMask32
+
 # Game imports
 
 __author__ = "MJ-meo-dmt"

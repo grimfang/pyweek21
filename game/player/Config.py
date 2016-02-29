@@ -40,13 +40,13 @@ class Config:
         self.key_plant = KeyboardButton.space()
         self.key_center_camera = KeyboardButton.home()
         # accleration for the various states
-        self.accleration = 5.0
+        self.accleration = 3.5
         # the speed of how fast the player deacclerates
-        self.deaccleration = 10.0
+        self.deaccleration = 8.0
         # maximum acclerations at the various states
-        self.max_accleration = 10.0
+        self.max_accleration = 8.0
         # the speed for how fast the player is generally moving
-        self.speed = 0.8
+        self.speed = 0.7
 
         #
         # CAMERA CONTROL VARIABLES
@@ -91,7 +91,7 @@ class Config:
         # PHYSICS
         #
         # show collision solids
-        self.show_collisions = True
+        self.show_collisions = False
         # The physical physic_world which will be responsible for collision checks and
         # physic updates
         self.physic_world = None

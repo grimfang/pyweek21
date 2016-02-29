@@ -190,12 +190,6 @@ class Main(ShowBase, FSM):
         base.cTrav.setRespectPrevTransform(True)
         # setup default physics
         base.enableParticles()
-        """# setup the gravity
-        gravityFN = ForceNode("world-forces")
-        gravityFNP = render.attachNewNode(gravityFN)
-        gravityForce = LinearVectorForce(0, 0, -9.81)  # gravity acceleration
-        gravityFN.addForce(gravityForce)
-        base.physicsMgr.addLinearForce(gravityForce)"""
 
         #
         # Event handling

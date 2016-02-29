@@ -36,6 +36,10 @@ class Control:
     def move(self, task):
         """The main task for updating the players position according
         to the keys pressed by the user"""
+
+        if self.state == self.STATE_PLANT:
+            return task.cont
+
         dt = globalClock.getDt()
         movementVec = Vec3(0, 0, 0)
         isMoving = False
@@ -100,9 +104,9 @@ class Control:
         tmpNP = self.mainNode.attachNewNode("temporary")
         tmpNP.setPos(self.mainNode, 0, -2, 0)
         pointA = self.mainNode.getPos()
-        pointA.setZ(self.mainNode.getZ() + self.player_height/2.0)
+        pointA.setZ(self.mainNode.getZ() + self.player_height)
         pointB = tmpNP.getPos(render)
-        pointB.setZ(self.mainNode.getZ() + self.player_height/2.0)
+        pointB.setZ(self.mainNode.getZ() + self.player_height)
         char_front_collision = self.getFirstCollisionInLine(pointA, pointB)
         tmpNP.removeNode()
         if char_front_collision is not None:
