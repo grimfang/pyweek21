@@ -161,3 +161,6 @@ class Player(FSM, Config, Physics, Actor, Camera, Control, Animator):
 
     def doPlant(self):
         base.messenger.send("player-plant_seed")
+
+    def doPickupSeed(self):
+        base.messenger.send("player-pickup_seed")
