@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # Panda3D imoprts
-from panda3d.core import CollisionSphere, CollisionNode
+from panda3d.core import CollisionSphere, CollisionNode, BitMask32
 
 # Game imports
 
@@ -17,6 +17,7 @@ class Seed():
 
     	self.id = 'seed'
     	self.seed = None
+    	self.cnodePath = None
 
     def OnSpawn(self, pos):
     	# Spawn in world (default)
@@ -24,14 +25,16 @@ class Seed():
     	# Load a model for now its just one.
     	self.seed = loader.loadModel("./assets/seed/seed")
     	self.SetParent(render)
-    	self.seed.setPos(pos)
+    	posn = (pos.x, pos.y, pos.z-1)
+    	self.seed.setPos(posn)
 
     	# Collision body
-    	cs = CollisionSphere(0, 0, 0, 0.3)
-    	cnodePath = self.seed.attachNewNode(CollisionNode('collisionSphere'))
-    	cnodePath.node().addSolid(cs)
+    	cs = CollisionSphere(0, 0, 0, 0.4)
+    	self.cnodePath = self.seed.attachNewNode(CollisionNode('collisionSphere'))
+    	self.cnodePath.node().addSolid(cs)
+    	self.cnodePath.setCollideMask(BitMask32.bit(5))
 
-    	cnodePath.show()
+    	self.cnodePath.show()
 
     def OnPickup(self):
     	# When the player touches the object "seed"
@@ -42,6 +45,10 @@ class Seed():
     		self.seed.reparentTo(newParent)
     	else:
     		print "No seed object spawned"
+
+    def RemoveCollisionNode(self):
+    	if self.cnodePath:
+    		base.cTrav.removeCollider(self.cnodePath)
 
     def Destroy(self):
     	self.seed.removeNode()
