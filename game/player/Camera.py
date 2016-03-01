@@ -53,6 +53,10 @@ class Camera:
         base.win.movePointer(0, self.win_width_half, self.win_height_half)
         camera.lookAt(self.cam_floater)
 
+    def showCharFront(self):
+        camera.setPos(self.mainNode, -1.5, -2.6, 0.8)
+        camera.lookAt(self.mainNode)
+
     def updateCamera(self, task):
         """This function will check the min and max distance of the camera to
         the defined model and will correct the position if the cam is to close

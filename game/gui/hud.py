@@ -21,6 +21,17 @@ class HUD():
         self.canPlantLabel.reparentTo(base.a2dBottomCenter)
         self.canPlantLabel.hide()
 
+        self.storyText = DirectLabel(
+            frameColor=(0, 0, 0, 0.25),
+            text_fg=(1, 1, 1, 1),
+            scale=0.08,
+            pos=(0, 0, 0.25),
+            pad=(0.2,0.2),
+            text="Story text")
+        self.storyText.setTransparency(True)
+        self.storyText.reparentTo(base.a2dBottomCenter)
+        self.storyText.hide()
+
         self.points = DirectLabel(
             frameColor=(0, 0, 0, 0.25),
             text_fg=(1, 1, 1, 1),
@@ -55,6 +66,22 @@ class HUD():
         self.helpInfo.setTransparency(True)
         self.helpInfo.reparentTo(base.a2dTopRight)
 
+    def show(self):
+        self.points.show()
+        self.playerWater.show()
+        self.helpInfo.show()
+
+    def hide(self):
+        self.points.hide()
+        self.playerWater.hide()
+        self.helpInfo.hide()
+
+    def showStory(self):
+        self.storyText.show()
+
+    def hideStory(self):
+        self.storyText.hide()
+
     def cleanup(self):
         self.canPlantLabel.destroy()
         self.points.destroy()
@@ -68,7 +95,11 @@ class HUD():
         self.canPlantLabel.hide()
 
     def setPoints(self, points):
-        self.points["test"] = _("Points: %d")%points
+        self.points["text"] = _("Points: %d")%points
 
     def setWater(self, water):
-        self.playerWater["test"] = _("Remaining Water: %d")%water
+        self.playerWater["text"] = _("Remaining Water: %d")%water
+
+    def setStory(self, storytext):
+        self.storyText["text"] = storytext
+        self.storyText.resetFrameSize()

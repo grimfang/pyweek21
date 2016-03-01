@@ -61,7 +61,8 @@ class Physics:
         charFFootCollisions.node().addSolid(CollisionRay(0, 0, 0, 0, 0, -1))
         charFFootCollisions.node().setIntoCollideMask(BitMask32.allOff())
         charFFootCollisions.node().setFromCollideMask(BitMask32(0x7f))  # 0111 1111
-        charFFootCollisions.show()
+        if self.show_collisions:
+            charFFootCollisions.show()
 
         self.floor_handler = CollisionHandlerFloor()
         self.floor_handler.addCollider(charFFootCollisions, self.mainNode)

@@ -78,7 +78,6 @@ class Level():
 
         self.spawnSeeds(7)
 
-
     def stop(self):
         self.clearSeeds()
         self.level.clearLight()
@@ -91,6 +90,12 @@ class Level():
             npc.cleanup()
             npc.removeNode()
         self.npcList = None
+
+    def show(self):
+        self.level.show()
+
+    def hide(self):
+        self.level.hide()
 
     def clearSeeds(self):
         print "clear seeds"

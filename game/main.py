@@ -242,6 +242,7 @@ class Main(ShowBase, FSM):
     def enterGame(self):
         # main game code should be called here
         print _("Enter Game")
+        helper.hide_cursor()
         self.music_menu.stop()
         self.music_game.play()
         self.world = World()
@@ -250,6 +251,7 @@ class Main(ShowBase, FSM):
     def exitGame(self):
         # cleanup for game code
         print _("Exit Game")
+        helper.show_cursor()
         self.world.stop()
         del self.world
 
@@ -264,6 +266,9 @@ class Main(ShowBase, FSM):
     def __escape(self):
         if self.state == "Menu":
             self.quit()
+        elif self.state == "Game":
+            if self.world.requestEscape():
+                self.request("Menu")
         else:
             self.request("Menu")
 

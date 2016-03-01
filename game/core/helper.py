@@ -40,3 +40,9 @@ def show_cursor():
     else:
         props.setCursorFilename(win)
     base.win.requestProperties(props)
+
+def center_cursor():
+    """Positions the cursor in the center of the screen"""
+    win_width_half = base.win.getXSize() / 2
+    win_height_half = base.win.getYSize() / 2
+    base.win.movePointer(0, win_width_half, win_height_half)

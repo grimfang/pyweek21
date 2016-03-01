@@ -166,7 +166,7 @@ class Player(FSM, Config, Physics, Actor, Camera, Control, Animator):
         base.messenger.send("player-plant_seed")
 
     def doPickupSeed(self, args):
-        
+
         #
         pass
 
