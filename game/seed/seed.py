@@ -41,13 +41,14 @@ class Seed():
     	self.cnodePath.node().addSolid(cs)
         self.cnodePath.node().setIntoCollideMask(BitMask32(0x80))  # 1000 0000
 
-    	self.cnodePath.show()
+    	#self.cnodePath.show()
 
         self.seedState = 0
 
     def DoPlantSeed(self, newPos):
+        npos = (newPos.x, newPos.y, newPos.z - 1.3)
         self.SetParent(render)
-        self.seed.setPos(newPos)
+        self.seed.setPos(npos)
         self.OnPlanted()
 
     def OnPlanted(self):
@@ -58,11 +59,11 @@ class Seed():
     def DoPickup(self, player):
     	# When the player touches the object "seed"
         print "PICKUP SEED"
+        self.seedState = 1
         self.RemoveCollisionNode()
         self.SetParent(player.mainNode)
         self.seed.setPos(0, 0, player.player_height+0.2)
-
-        self.seedState = 1
+        
 
     def SetParent(self, newParent):
     	if self.seed != None:

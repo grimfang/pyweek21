@@ -154,7 +154,7 @@ class Level():
         #TODO: MJ-meo-dmt add functionality to the seed pickup
         for seed in self.spawnedSeeds:
             cid = "seedSphere-" + self.spawnedSeeds[seed].id
-            if cid == seedName:
+            if cid == seedName and self.spawnedSeeds[seed].seedState == 0:
                 self.spawnedSeeds[seed].DoPickup(self.player)
 
     def doPlantSeed(self, plantGround):
@@ -165,7 +165,7 @@ class Level():
             if self.spawnedSeeds[seed].seedState == 1:
                 print "plant", self.spawnedSeeds[seed].id
                 #TODO: Do planting logic here
-                self.spawnedSeeds[seed].DoPlantSeed(plantGround.getIntoNodePath().getPos())
+                self.spawnedSeeds[seed].DoPlantSeed(plantGround.getIntoNodePath().getParent().getPos(self.level))
 
                 print "PLANTING GROUND:", plantGround
                 print "PLANTING GROUND NAME:", plantGround.getIntoNode().getName()
