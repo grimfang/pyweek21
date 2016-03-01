@@ -43,6 +43,7 @@ class Level():
         self.bridge1 = loader.loadModel("forest/Bridge1")
         self.bridge2 = loader.loadModel("forest/Bridge2")
         self.bridge3 = loader.loadModel("forest/Bridge3")
+        self.bridge4 = loader.loadModel("forest/Bridge4")
 
         # some light green fog
         self.fog = Fog("Forest Fog")
@@ -66,11 +67,12 @@ class Level():
 
         # spawn NPCs
         self.npcList = []
-        for i in range(5):
+        for i in range(12):
             npc = Actor(
                 "character/character",
                 {"Idle": "character/character-Idle"})
             npc.setBlend(frameBlend=True)
+            npc.setScale(random.uniform(0.25, 1.0))
             npc.loop("Idle")
             point = self.level.find("**/NPC.%03d"%i)
             npc.reparentTo(point)
@@ -162,8 +164,6 @@ class Level():
         for seed in self.spawnedSeeds:
             if self.spawnedSeeds[seed].seedState == 1:
                 #TODO: Maybe change those dependent on if the plant is a big one, for example those that generate bridges, or a small one.
-                base.messenger.send("addPoints", [100])
-                base.messenger.send("drawPlayerWater", [10])
                 self.spawnedSeeds[seed].DoPlantSeed(plantGround.getIntoNodePath().getParent())
 
                 playerPlantPoint = plantGround.getIntoNodePath().getParent().find("**/PlayerPlantingPos")
@@ -171,13 +171,35 @@ class Level():
                 self.player.setStartHpr(playerPlantPoint.getHpr(render))
                 self.player.setStartPos(playerPlantPoint.getPos(render))
 
-                #print "PLANTING GROUND:", plantGround
-                #print "PLANTING GROUND NAME:", plantGround.getIntoNode().getName()
-
-
-                #TODO: remove the planting ground after the plant has grown
-                #      and set the player backward a bit so he doesn't stand
-                #      inside the plant!
-                #plantground = self.level.find("**/"+plantGround)
-                #plantground.removeNode()
+                plantGroundNP = plantGround.getIntoNodePath().getParent().getParent()
+                plantGroundName = plantGroundNP.getName()
+                base.cTrav.removeCollider(plantGround.getIntoNodePath())
+                if plantGroundName == "PlantGround.000":
+                    #Bridge 1
+                    base.messenger.send("addPoints", [200])
+                    base.messenger.send("drawPlayerWater", [20])
+                    plantGroundNP.removeNode()
+                    self.bridge1.reparentTo(self.level)
+                elif plantGroundName == "PlantGround.001":
+                    #Bridge 2
+                    base.messenger.send("addPoints", [300])
+                    base.messenger.send("drawPlayerWater", [20])
+                    plantGroundNP.removeNode()
+                    self.bridge2.reparentTo(self.level)
+                elif plantGroundName == "PlantGround.002":
+                    #Bridge 3
+                    base.messenger.send("addPoints", [400])
+                    base.messenger.send("drawPlayerWater", [20])
+                    plantGroundNP.removeNode()
+                    self.bridge3.reparentTo(self.level)
+                elif plantGroundName == "PlantGround.003":
+                    #Bridge 4
+                    base.messenger.send("addPoints", [500])
+                    base.messenger.send("drawPlayerWater", [20])
+                    plantGroundNP.removeNode()
+                    self.bridge4.reparentTo(self.level)
+                else:
+                    base.messenger.send("addPoints", [100])
+                    base.messenger.send("drawPlayerWater", [10])
+                    plantGround.getIntoNodePath().removeNode()
                 break
