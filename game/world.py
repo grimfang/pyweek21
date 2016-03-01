@@ -144,7 +144,54 @@ class World(DirectObject, FSM):
             Func(self.hud.hideStory),
             Func(self.demand, "Main"))
 
+
+        self.outro1 = createFadeableImage("gui/outro1.png", "ts-outro1", True)
+        self.outro2 = createFadeableImage("gui/outro2.png", "ts-outro2", True)
+        self.outro3 = createFadeableImage("gui/outro3.png", "ts-outro3", True)
+        self.outroSequence = Sequence(
+            Wait(1.0),
+            Func(self.hud.showStory),
+            Func(self.outro1.show),
+            Func(self.hud.setStory, _("You have done well my little droplets.")),
+            self.outro1.colorScaleInterval(
+                1.5,
+                (0,0,0,1),
+                (0,0,0,0)),
+            Wait(5.0),
+            self.outro1.colorScaleInterval(
+                1.5,
+                (0,0,0,0),
+                (0,0,0,1)),
+            Func(self.outro1.hide),
+            Func(self.outro2.show),
+            Func(self.hud.setStory, _("But... now it's again time to go for you.")),
+            Func(self.player.hide)
+            self.outro2.colorScaleInterval(
+                1.5,
+                (0,0,0,1),
+                (0,0,0,0)),
+            Wait(5.0),
+            self.outro2.colorScaleInterval(
+                1.5,
+                (0,0,0,0),
+                (0,0,0,1)),
+            Func(self.outro2.hide),
+            Func(self.outro3.show),
+            self.outro3.colorScaleInterval(
+                1.5,
+                (0,0,0,1),
+                (0,0,0,0)),
+            Wait(5.0),
+            self.outro3.colorScaleInterval(
+                1.5,
+                (0,0,0,0),
+                (0,0,0,1)),
+            Func(self.outro3.hide),
+            Func(self.hud.hideStory),
+            Func(base.messenger.send, "GameOver"))
+
         self.acceptOnce("CharacterCollisions-in-tutorial1", self.showTutorial)
+        self.acceptOnce("characterCollisions-in-finish", self.request, extraArgs=["Outro"])
         self.accept("CharacterCollisions-in-PlantGroundCollider", self.enablePlanting)
         self.accept("CharacterCollisions-out-PlantGroundCollider", self.disablePlanting)
         self.accept("CharacterCollisions-in", self.checkCollisions)
@@ -163,7 +210,16 @@ class World(DirectObject, FSM):
         self.level.stop()
         del self.level
         self.tutorialInterval.finish()
+        self.outroSequence.finish()
         self.tutorial1.removeNode()
+        self.intro1.removeNode()
+        self.intro2.removeNode()
+        self.intro3.removeNode()
+        self.outro1.removeNode()
+        self.outro2.removeNode()
+        self.outro3.removeNode()
+        self.tut1.removeNode()
+        self.tut2.removeNode()
         self.hud.cleanup()
 
     def requestEscape(self):
@@ -224,3 +280,14 @@ class World(DirectObject, FSM):
         helper.center_cursor()
         self.player.centerCamera()
         self.introSequence.finish()
+
+    def enterOutro(self):
+        startPoint = self.level.getEndPoint()
+        if startPoint is not None:
+            self.player.setStartPos(startPoint.getPos())
+            self.player.setStartHpr(startPoint.getHpr())
+        self.player.centerCamera()
+        self.outroSequence.start()
+
+    def exitOutro(self):
+        self.outroSequence.finish()
