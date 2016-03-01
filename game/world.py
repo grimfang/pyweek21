@@ -71,7 +71,8 @@ class World(DirectObject, FSM):
                 1.5,
                 (0,0,0,0),
                 (0,0,0,1)),
-            Func(self.tutorial1.hide))
+            Func(self.tutorial1.hide),
+            name="Tutorial Sequence")
 
         self.intro1 = createFadeableImage("gui/intro1.png", "ts-intro1", True)
         self.intro2 = createFadeableImage("gui/intro1.png", "ts-intro2", True)
@@ -142,7 +143,8 @@ class World(DirectObject, FSM):
                 (0,0,0,1)),
             Func(self.tut2.hide),
             Func(self.hud.hideStory),
-            Func(self.demand, "Main"))
+            Func(self.demand, "Main"),
+            name="Intro Sequence",)
 
 
         self.outro1 = createFadeableImage("gui/outro1.png", "ts-outro1", True)
@@ -165,7 +167,7 @@ class World(DirectObject, FSM):
             Func(self.outro1.hide),
             Func(self.outro2.show),
             Func(self.hud.setStory, _("But... now it's again time to go for you.")),
-            Func(self.player.hide),
+            #Func(self.player.hide),
             self.outro2.colorScaleInterval(
                 1.5,
                 (0,0,0,1),
@@ -188,7 +190,8 @@ class World(DirectObject, FSM):
                 (0,0,0,1)),
             Func(self.outro3.hide),
             Func(self.hud.hideStory),
-            Func(base.messenger.send, "GameOver"))
+            Func(base.messenger.send, "GameOver"),
+            name="Outro Sequence",)
 
         self.acceptOnce("CharacterCollisions-in-tutorial1", self.showTutorial)
         self.acceptOnce("characterCollisions-in-finish", self.request, extraArgs=["Outro"])
