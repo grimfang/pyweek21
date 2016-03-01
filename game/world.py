@@ -146,8 +146,8 @@ class World(DirectObject, FSM):
 
 
         self.outro1 = createFadeableImage("gui/outro1.png", "ts-outro1", True)
-        self.outro2 = createFadeableImage("gui/outro2.png", "ts-outro2", True)
-        self.outro3 = createFadeableImage("gui/outro3.png", "ts-outro3", True)
+        self.outro2 = createFadeableImage("gui/outro1.png", "ts-outro2", True)
+        self.outro3 = createFadeableImage("gui/outro1.png", "ts-outro3", True)
         self.outroSequence = Sequence(
             Wait(1.0),
             Func(self.hud.showStory),
@@ -165,7 +165,7 @@ class World(DirectObject, FSM):
             Func(self.outro1.hide),
             Func(self.outro2.show),
             Func(self.hud.setStory, _("But... now it's again time to go for you.")),
-            Func(self.player.hide)
+            Func(self.player.hide),
             self.outro2.colorScaleInterval(
                 1.5,
                 (0,0,0,1),
