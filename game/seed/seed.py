@@ -68,9 +68,11 @@ class Seed():
     		print "No seed object spawned"
 
     def RemoveCollisionNode(self):
-    	if self.cnodePath:
-    		base.cTrav.removeCollider(self.cnodePath)
+        if self.cnodePath != None:
+            base.cTrav.removeCollider(self.cnodePath)
+            self.cnodePath.hide()
 
     def Destroy(self):
         print "destroy seed"
     	self.seed.removeNode()
+        self.cnodePath = None
