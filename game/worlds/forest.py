@@ -39,6 +39,10 @@ class Level():
         self.level = loader.loadModel("forest/Forest")
         self.level.reparentTo(render)
 
+        # Extra Collision solids
+        self.bridge1 = loader.loadModel("forest/Bridge1")
+        self.bridge2 = loader.loadModel("forest/Bridge2")
+
         # some light green fog
         self.fog = Fog("Forest Fog")
         self.fog.setColor(0.0, 0.9, 0.7)
@@ -153,3 +157,22 @@ class Level():
             if cid == seedName:
                 self.spawnedSeeds[seed].DoPickup(self.player)
 
+    def doPlantSeed(self, plantGround):
+        if self.player.carry_seed == False:
+            return
+        self.player.carry_seed = False
+        for seed in self.spawnedSeeds:
+            if self.spawnedSeeds[seed].seedState == 1:
+                print "plant", self.spawnedSeeds[seed].id
+                #TODO: Do planting logic here
+
+                print "PLANTING GROUND:", plantGround
+                print "PLANTING GROUND NAME:", plantGround.getName()
+
+
+                #TODO: remove the planting ground after the plant has grown
+                #      and set the player backward a bit so he doesn't stand
+                #      inside the plant!
+                #plantground = self.level.find("**/"+plantGround)
+                #plantground.removeNode()
+                break

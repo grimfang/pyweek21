@@ -148,6 +148,7 @@ class World(DirectObject, FSM):
         self.accept("CharacterCollisions-in-PlantGroundCollider", self.enablePlanting)
         self.accept("CharacterCollisions-out-PlantGroundCollider", self.disablePlanting)
         self.accept("CharacterCollisions-in", self.checkCollisions)
+        self.accept("player-plant_seed", self.doPlantSeed)
         self.accept("f1", self.showTutorial, extraArgs=[None])
 
     def start(self):
@@ -181,7 +182,7 @@ class World(DirectObject, FSM):
             self.doPickupSeed(args)
 
     def enablePlanting(self, args):
-        self.currentPlantingGround = args
+        self.currentPlantingGround = args.getIntoNode()
         self.player.enablePlanting(True)
         self.hud.showCanPlant()
 
@@ -192,6 +193,9 @@ class World(DirectObject, FSM):
     def doPickupSeed(self, args):
         self.player.doPickupSeed(args)
         self.level.doPickupSeed(args)
+
+    def doPlantSeed(self):
+        self.level.doPlantSeed(self.currentPlantingGround)
 
     def enterMain(self):
         """Main state of the world."""
