@@ -37,9 +37,12 @@ class Seed():
 
     	self.cnodePath.show()
 
-    def OnPickup(self):
+    def DoPickup(self, player):
     	# When the player touches the object "seed"
         print "PICKUP SEED"
+        self.RemoveCollisionNode()
+        self.SetParent(player)
+        #self.seed.setPos(player.getX(), player.getY(), player.getZ()+1)
 
     def SetParent(self, newParent):
     	if self.seed != None:

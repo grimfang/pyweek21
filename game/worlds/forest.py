@@ -136,5 +136,11 @@ class Level():
         return points
 
     def doPickupSeed(self, args):
-        print args
+        seedName = args.getIntoNode().getName()
+        player = args.getFromNodePath()
         #TODO: MJ-meo-dmt add functionality to the seed pickup
+        for seed in self.spawnedSeeds:
+            cid = "seedSphere-" + self.spawnedSeeds[seed].id
+            if cid == seedName:
+                self.spawnedSeeds[seed].DoPickup(player)
+
