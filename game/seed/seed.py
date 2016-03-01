@@ -19,6 +19,12 @@ class Seed():
     	self.seed = None
     	self.cnodePath = None
 
+        # Spawned = 0
+        # PickedUp = 1
+        # Planeted = 2
+        # Growing = 3
+        self.seedState = None
+
     def OnSpawn(self, pos):
     	# Spawn in world (default)
 
@@ -37,13 +43,23 @@ class Seed():
 
     	self.cnodePath.show()
 
+        self.seedState = 0
+
+    def DoPlantSeed(self):
+        pass
+
+    def OnPlanted(self):
+        # Start growing timer /check /things
+        pass
+
     def DoPickup(self, player):
     	# When the player touches the object "seed"
         print "PICKUP SEED"
         self.RemoveCollisionNode()
         self.SetParent(player.mainNode)
         self.seed.setPos(0, 0, player.player_height+0.2)
-        #self.seed.setPos(player.getX(), player.getY(), player.getZ()+1)
+
+        self.seedState = 1
 
     def SetParent(self, newParent):
     	if self.seed != None:
