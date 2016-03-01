@@ -45,12 +45,15 @@ class Seed():
 
         self.seedState = 0
 
-    def DoPlantSeed(self):
-        pass
+    def DoPlantSeed(self, newPos):
+        self.SetParent(render)
+        self.seed.setPos(newPos)
+        self.OnPlanted()
 
     def OnPlanted(self):
         # Start growing timer /check /things
-        pass
+        self.seedState = 2
+        print "SEED PLANTED, START GROWING!!"
 
     def DoPickup(self, player):
     	# When the player touches the object "seed"

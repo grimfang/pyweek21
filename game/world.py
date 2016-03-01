@@ -238,7 +238,7 @@ class World(DirectObject, FSM):
             self.doPickupSeed(args)
 
     def enablePlanting(self, args):
-        self.currentPlantingGround = args.getIntoNode()
+        self.currentPlantingGround = args
         self.player.enablePlanting(True)
         self.hud.showCanPlant()
 

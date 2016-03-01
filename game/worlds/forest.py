@@ -165,9 +165,10 @@ class Level():
             if self.spawnedSeeds[seed].seedState == 1:
                 print "plant", self.spawnedSeeds[seed].id
                 #TODO: Do planting logic here
+                self.spawnedSeeds[seed].DoPlantSeed(plantGround.getIntoNodePath().getPos())
 
                 print "PLANTING GROUND:", plantGround
-                print "PLANTING GROUND NAME:", plantGround.getName()
+                print "PLANTING GROUND NAME:", plantGround.getIntoNode().getName()
 
 
                 #TODO: remove the planting ground after the plant has grown
