@@ -24,7 +24,9 @@ See License.txt or http://opensource.org/licenses/BSD-2-Clause for more info
 """
 
 class Level():
-    def __init__(self):
+    def __init__(self, player):
+        self.player = player
+
         self.skybox = loader.loadModel("skybox/Skybox")
         self.skybox.setScale(0.8)
         self.skybox.setPos(0, 0, 0.5)
@@ -136,11 +138,13 @@ class Level():
         return points
 
     def doPickupSeed(self, args):
+        if self.player.carry_seed == True:
+            return
+        self.player.carry_seed = True
         seedName = args.getIntoNode().getName()
-        player = args.getFromNodePath()
         #TODO: MJ-meo-dmt add functionality to the seed pickup
         for seed in self.spawnedSeeds:
             cid = "seedSphere-" + self.spawnedSeeds[seed].id
             if cid == seedName:
-                self.spawnedSeeds[seed].DoPickup(player)
+                self.spawnedSeeds[seed].DoPickup(self.player)
 

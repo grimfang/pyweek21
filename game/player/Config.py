@@ -55,8 +55,13 @@ class Config:
         self.max_accleration = 8.0
         # the speed for how fast the player is generally moving
         self.speed = 0.7
+
+        #
+        # GAME SPECIFIC
+        #
         # planting possibility
         self.planting_enabled = False
+        self.carry_seed = False
 
         #
         # CAMERA CONTROL VARIABLES

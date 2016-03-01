@@ -41,7 +41,8 @@ class Seed():
     	# When the player touches the object "seed"
         print "PICKUP SEED"
         self.RemoveCollisionNode()
-        self.SetParent(player)
+        self.SetParent(player.mainNode)
+        self.seed.setPos(0, 0, player.player_height+0.2)
         #self.seed.setPos(player.getX(), player.getY(), player.getZ()+1)
 
     def SetParent(self, newParent):

@@ -104,7 +104,7 @@ class World(DirectObject, FSM):
         """Main state of the world."""
         print _("Enter World")
         helper.hide_cursor()
-        self.level = Level()
+        self.level = Level(self.player)
         self.player.startPlayer()
         startPoint = self.level.getStartPoint()
         if startPoint is not None:
