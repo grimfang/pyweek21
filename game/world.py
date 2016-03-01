@@ -165,7 +165,7 @@ class World(DirectObject, FSM):
             Func(self.outro1.hide),
             Func(self.outro2.show),
             Func(self.hud.setStory, _("But... now it's again time to go for you.")),
-            Func(self.player.hide)
+            Func(self.player.hide),
             self.outro2.colorScaleInterval(
                 1.5,
                 (0,0,0,1),
