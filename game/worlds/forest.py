@@ -91,7 +91,9 @@ class Level():
         self.npcList = None
 
     def clearSeeds(self):
+        print "clear seeds"
         for seed in self.spawnedSeeds:
+            print "clear", seed
             self.spawnedSeeds[seed].Destroy()
 
         self.tutorialSeed.Destroy()

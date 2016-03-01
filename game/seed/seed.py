@@ -52,4 +52,5 @@ class Seed():
     		base.cTrav.removeCollider(self.cnodePath)
 
     def Destroy(self):
+        print "destroy seed"
     	self.seed.removeNode()

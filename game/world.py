@@ -36,7 +36,6 @@ class World(DirectObject, FSM):
 
         cm = CardMaker("FadableCard")
         cm.setFrame(-1, 1, -1, 1)
-        self.tutorial1Shown = False
         self.tutorial1 = NodePath(cm.generate())
         self.tutorial1.setTransparency(TransparencyAttrib.MAlpha)
         self.tutorial1Tex = loader.loadTexture("gui/tutorial.png")
@@ -61,10 +60,11 @@ class World(DirectObject, FSM):
                 (0,0,0,1)),
             Func(self.tutorial1.hide))
 
-        self.accept("CharacterCollisions-in-tutorial1", self.showTutorial)
+        self.acceptOnce("CharacterCollisions-in-tutorial1", self.showTutorial)
         self.accept("CharacterCollisions-in-PlantGroundCollider", self.enablePlanting)
         self.accept("CharacterCollisions-out-PlantGroundCollider", self.disablePlanting)
         self.accept("CharacterCollisions-in", self.checkCollisions)
+        self.accept("f1", self.showTutorial, extraArgs=[None])
 
     def start(self):
         self.request("Main")
@@ -80,10 +80,6 @@ class World(DirectObject, FSM):
         self.hud.cleanup()
 
     def showTutorial(self, args):
-        if self.tutorial1Shown == False:
-            self.tutorial1Shown = True
-        else:
-            return
         if not self.tutorialInterval.isPlaying():
             self.tutorialInterval.start()
 

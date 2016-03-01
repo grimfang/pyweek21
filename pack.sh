@@ -16,14 +16,14 @@ echo "=============================="
 
 current_time=$(date "+%Y%m%d-%H%M%S")
 version=$(date "+%y.%m")
-name="The Games name"
-fname="the-game-name"
+name="The Little Drop"
+fname="the-little-drop"
 org="org.grimfang-studio"
 orgFull="GrimFang Studio"
 mail="info@grimfang-studio.org"
 releasesDir=./releases
 gameName=$releasesDir/Game$current_time.p3d
-iconPath=./Design/icons
+iconPath=./Design/Icons
 
 echo "=============================="
 echo ""
@@ -42,7 +42,7 @@ echo ""
 #
 # self containing installer
 #
-pdeploy -n $fname -N "$name" -v $version -o $releasesDir -a $org -A "$orgFull" -e $mail -s $gameName installer
+pdeploy -n $fname -N "$name" -v $version -o $releasesDir -a $org -A "$orgFull" -e $mail -i $iconPath/Icon16.png -i $iconPath/Icon32.png -i $iconPath/Icon48.png -i $iconPath/Icon64.png -i $iconPath/Icon128.png -s $gameName installer
 
 echo ""
 echo "installers created"

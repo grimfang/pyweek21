@@ -43,10 +43,23 @@ class HUD():
         self.playerWater.setTransparency(True)
         self.playerWater.reparentTo(base.a2dTopLeft)
 
+
+        self.helpInfo = DirectLabel(
+            frameColor=(0, 0, 0, 0.25),
+            text_fg=(1, 1, 1, 1),
+            scale=0.075,
+            pos=(-0.05, 0, -0.1),
+            pad=(0.2,0.2),
+            text_align=TextNode.ARight,
+            text=_("F1 - show help"))
+        self.helpInfo.setTransparency(True)
+        self.helpInfo.reparentTo(base.a2dTopRight)
+
     def cleanup(self):
         self.canPlantLabel.destroy()
         self.points.destroy()
         self.playerWater.destroy()
+        self.helpInfo.destroy()
 
     def showCanPlant(self):
         self.canPlantLabel.show()
