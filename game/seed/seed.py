@@ -15,9 +15,9 @@ See License.txt or http://opensource.org/licenses/BSD-2-Clause for more info
 class Seed():
     def __init__(self):
 
-    	self.id = "seed" + str(id(self))
-    	self.seed = None
-    	self.cnodePath = None
+        self.id = "seed" + str(id(self))
+        self.seed = None
+        self.cnodePath = None
 
         # Spawned = 0
         # PickedUp = 1
@@ -26,28 +26,29 @@ class Seed():
         self.seedState = None
 
     def OnSpawn(self, pos):
-    	# Spawn in world (default)
+        # Spawn in world (default)
 
-    	# Load a model for now its just one.
-    	self.seed = loader.loadModel("./assets/seed/seed")
-    	self.SetParent(render)
-    	posn = (pos.x, pos.y, pos.z-1)
-    	self.seed.setPos(posn)
+        # Load a model for now its just one.
+        self.seed = loader.loadModel("./assets/seed/seed")
+        self.SetParent(render)
+        posn = (pos.x, pos.y, pos.z-1)
+        self.seed.setPos(posn)
 
-    	# Collision body
-    	cs = CollisionSphere(0, 0, 0, 0.4)
+        # Collision body
+        cs = CollisionSphere(0, 0, 0, 0.4)
         cs.setTangible(False)
-    	self.cnodePath = self.seed.attachNewNode(CollisionNode("seedSphere-" + self.id))
-    	self.cnodePath.node().addSolid(cs)
+        self.cnodePath = self.seed.attachNewNode(CollisionNode("seedSphere-" + self.id))
+        self.cnodePath.node().addSolid(cs)
         self.cnodePath.node().setIntoCollideMask(BitMask32(0x80))  # 1000 0000
 
-    	#self.cnodePath.show()
+        self.cnodePath.show()
 
         self.seedState = 0
 
-    def DoPlantSeed(self, newPos):
-        npos = (newPos.x, newPos.y, newPos.z - 1.3)
-        self.SetParent(render)
+    def DoPlantSeed(self, plantingGround):
+        npos = (0, 0, 0)
+        self.seed.setHpr(0, 0, 90)
+        self.SetParent(plantingGround)
         self.seed.setPos(npos)
         self.OnPlanted()
 
@@ -57,26 +58,26 @@ class Seed():
         print "SEED PLANTED, START GROWING!!"
 
     def DoPickup(self, player):
-    	# When the player touches the object "seed"
-        print "PICKUP SEED"
+        # When the player touches the object "seed"
         self.seedState = 1
         self.RemoveCollisionNode()
         self.SetParent(player.mainNode)
         self.seed.setPos(0, 0, player.player_height+0.2)
-        
+
 
     def SetParent(self, newParent):
-    	if self.seed != None:
-    		self.seed.reparentTo(newParent)
-    	else:
-    		print "No seed object spawned"
+        if self.seed != None:
+            self.seed.reparentTo(newParent)
+        else:
+            print "No seed object spawned"
 
     def RemoveCollisionNode(self):
         if self.cnodePath != None:
             base.cTrav.removeCollider(self.cnodePath)
-            self.cnodePath.hide()
+            self.cnodePath.removeNode()
+            #self.cnodePath.hide()
 
     def Destroy(self):
-        print "destroy seed"
-    	self.seed.removeNode()
+        self.RemoveCollisionNode()
+        self.seed.removeNode()
         self.cnodePath = None

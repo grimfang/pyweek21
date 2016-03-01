@@ -36,6 +36,9 @@ class World(DirectObject, FSM):
         self.player.pausePlayer()
         self.player.hide()
 
+        self.points = 0
+        self.water = 100
+
         self.hud = HUD()
 
         self.level = Level(self.player)
@@ -146,7 +149,6 @@ class World(DirectObject, FSM):
             Func(self.demand, "Main"),
             name="Intro Sequence",)
 
-
         self.outro1 = createFadeableImage("gui/outro1.png", "ts-outro1", True)
         self.outro2 = createFadeableImage("gui/outro1.png", "ts-outro2", True)
         self.outro3 = createFadeableImage("gui/outro1.png", "ts-outro3", True)
@@ -193,6 +195,27 @@ class World(DirectObject, FSM):
             Func(base.messenger.send, "GameOver"),
             name="Outro Sequence",)
 
+
+        self.gameOver1 = createFadeableImage("gui/gameOver1.png", "ts-gameOver1", True)
+        self.gameOverSequence = Sequence(
+            Wait(1.0),
+            Func(self.hud.showStory),
+            Func(self.outro1.show),
+            Func(self.hud.setStory, _("You did your best and now you're one with the nature.")),
+            self.gameOver1.colorScaleInterval(
+                1.5,
+                (0,0,0,1),
+                (0,0,0,0)),
+            Wait(5.0),
+            self.gameOver1.colorScaleInterval(
+                1.5,
+                (0,0,0,0),
+                (0,0,0,1)),
+            Func(self.gameOver1.hide),
+            Func(self.hud.hideStory),
+            Func(base.messenger.send, "GameOver"),
+            name="Game Over Sequence",)
+
         self.acceptOnce("CharacterCollisions-in-tutorial1", self.showTutorial)
         self.acceptOnce("characterCollisions-in-finish", self.request, extraArgs=["Outro"])
         self.accept("CharacterCollisions-in-PlantGroundCollider", self.enablePlanting)
@@ -200,6 +223,8 @@ class World(DirectObject, FSM):
         self.accept("CharacterCollisions-in", self.checkCollisions)
         self.accept("player-plant_seed", self.doPlantSeed)
         self.accept("f1", self.showTutorial, extraArgs=[None])
+        self.accept("addPoints", self.addPoints)
+        self.accept("drawPlayerWater", self.drawPlayerWater)
 
     def start(self):
         self.request("Main")
@@ -223,6 +248,7 @@ class World(DirectObject, FSM):
         self.outro3.removeNode()
         self.tut1.removeNode()
         self.tut2.removeNode()
+        self.gameOver1.removeNode()
         self.hud.cleanup()
 
     def requestEscape(self):
@@ -255,6 +281,20 @@ class World(DirectObject, FSM):
 
     def doPlantSeed(self):
         self.level.doPlantSeed(self.currentPlantingGround)
+
+    def addPoints(self, points):
+        self.points += points
+        self.hud.setPoints(self.points)
+
+    def drawPlayerWater(self, amount):
+        self.water -= amount
+        self.hud.setWater(self.water)
+        newScale = self.water/100.0
+        if self.water == 0:
+            self.player.hide()
+            self.request("GameOver")
+            return
+        self.player.setScale(newScale)
 
     def enterMain(self):
         """Main state of the world."""
@@ -294,3 +334,9 @@ class World(DirectObject, FSM):
 
     def exitOutro(self):
         self.outroSequence.finish()
+
+    def enterGameOver(self):
+        self.gameOverSequence.start()
+
+    def exitGameOver(self):
+        self.gameOverSequence.finish()

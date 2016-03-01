@@ -210,6 +210,8 @@ class Main(ShowBase, FSM):
         self.accept("menu_options", self.request, ["Options"])
         self.accept("menu_quit", self.quit)
         self.accept("options_back", self.request, ["Menu"])
+        # game over
+        self.accept("GameOver", self.demand, ["Menu"])
 
         #
         # Start with the menu

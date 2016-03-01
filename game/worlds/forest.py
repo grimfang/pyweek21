@@ -42,6 +42,7 @@ class Level():
         # Extra Collision solids
         self.bridge1 = loader.loadModel("forest/Bridge1")
         self.bridge2 = loader.loadModel("forest/Bridge2")
+        self.bridge3 = loader.loadModel("forest/Bridge3")
 
         # some light green fog
         self.fog = Fog("Forest Fog")
@@ -102,9 +103,7 @@ class Level():
         self.level.hide()
 
     def clearSeeds(self):
-        print "clear seeds"
         for seed in self.spawnedSeeds:
-            print "clear", seed
             self.spawnedSeeds[seed].Destroy()
 
         self.tutorialSeed.Destroy()
@@ -151,7 +150,6 @@ class Level():
             return
         self.player.carry_seed = True
         seedName = args.getIntoNode().getName()
-        #TODO: MJ-meo-dmt add functionality to the seed pickup
         for seed in self.spawnedSeeds:
             cid = "seedSphere-" + self.spawnedSeeds[seed].id
             if cid == seedName and self.spawnedSeeds[seed].seedState == 0:
@@ -163,12 +161,18 @@ class Level():
         self.player.carry_seed = False
         for seed in self.spawnedSeeds:
             if self.spawnedSeeds[seed].seedState == 1:
-                print "plant", self.spawnedSeeds[seed].id
-                #TODO: Do planting logic here
-                self.spawnedSeeds[seed].DoPlantSeed(plantGround.getIntoNodePath().getParent().getPos(self.level))
+                #TODO: Maybe change those dependent on if the plant is a big one, for example those that generate bridges, or a small one.
+                base.messenger.send("addPoints", [100])
+                base.messenger.send("drawPlayerWater", [10])
+                self.spawnedSeeds[seed].DoPlantSeed(plantGround.getIntoNodePath().getParent())
 
-                print "PLANTING GROUND:", plantGround
-                print "PLANTING GROUND NAME:", plantGround.getIntoNode().getName()
+                playerPlantPoint = plantGround.getIntoNodePath().getParent().find("**/PlayerPlantingPos")
+
+                self.player.setStartHpr(playerPlantPoint.getHpr(render))
+                self.player.setStartPos(playerPlantPoint.getPos(render))
+
+                #print "PLANTING GROUND:", plantGround
+                #print "PLANTING GROUND NAME:", plantGround.getIntoNode().getName()
 
 
                 #TODO: remove the planting ground after the plant has grown

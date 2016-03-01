@@ -23,6 +23,17 @@
   <Scalar> wrap { REPEAT }
 }
 
+  <Group> PlayerPlantingPos {
+    <Transform> {
+      <Matrix4> {
+        -1.0 1.5099580252808664e-07 0.0 0.0 
+        -1.5099580252808664e-07 -1.0 0.0 0.0 
+        0.0 0.0 1.0 0.0 
+        0.0 -1.3000000715255737 0.0 1.0 
+      }
+    }
+    
+  }
   <Group> PlantGroundCollider {
     <ObjectType> { trigger-sphere }
     <Scalar> into-collide-mask { 0x80 }

@@ -96,9 +96,11 @@ class HUD():
 
     def setPoints(self, points):
         self.points["text"] = _("Points: %d")%points
+        self.points.resetFrameSize()
 
     def setWater(self, water):
         self.playerWater["text"] = _("Remaining Water: %d")%water
+        self.playerWater.resetFrameSize()
 
     def setStory(self, storytext):
         self.storyText["text"] = storytext
