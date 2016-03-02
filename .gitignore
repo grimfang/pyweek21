@@ -1,3 +1,7 @@
+# Backups
+*.blend[0-9]
+*~
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -56,3 +60,4 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+/Design/Level/Forest.blend1
