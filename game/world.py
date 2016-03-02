@@ -62,7 +62,7 @@ class World(DirectObject, FSM):
             image.hide()
             return image
 
-        self.tutorial1 = createFadeableImage("gui/tutorial.png", "ts-tutorial1")
+        self.tutorial1 = createFadeableImage("gui/tutorial3.png", "ts-tut3")
         self.tutorialInterval = Sequence(
             Func(self.tutorial1.show),
             self.tutorial1.colorScaleInterval(
@@ -75,13 +75,13 @@ class World(DirectObject, FSM):
                 (0,0,0,0),
                 (0,0,0,1)),
             Func(self.tutorial1.hide),
-            name="Tutorial Sequence")
+            name="Planting Tutorial Sequence")
 
         self.intro1 = createFadeableImage("gui/intro1.png", "ts-intro1", True)
-        self.intro2 = createFadeableImage("gui/intro1.png", "ts-intro2", True)
-        self.intro3 = createFadeableImage("gui/intro1.png", "ts-intro3", True)
-        self.tut1 = createFadeableImage("gui/intro2.png", "ts-tut1", True)
-        self.tut2 = createFadeableImage("gui/intro2.png", "ts-tut2", True)
+        self.intro2 = createFadeableImage("gui/intro2.png", "ts-intro2", True)
+        self.intro3 = createFadeableImage("gui/intro3.png", "ts-intro3", True)
+        self.tut1 = createFadeableImage("gui/tutorial1.png", "ts-tut1", True)
+        self.tut2 = createFadeableImage("gui/tutorial2.png", "ts-tut2", True)
         self.introSequence = Sequence(
             Wait(1.0),
             Func(self.hud.showStory),
@@ -134,7 +134,7 @@ class World(DirectObject, FSM):
                 (0,0,0,1)),
             Func(self.tut1.hide),
             Func(self.tut2.show),
-            Func(self.hud.setStory, _("Press Pos 1 to center the camera behind the player.")),
+            Func(self.hud.setStory, _("Press Home to center the camera behind the player.")),
             self.tut2.colorScaleInterval(
                 1.5,
                 (0,0,0,1),
@@ -150,8 +150,8 @@ class World(DirectObject, FSM):
             name="Intro Sequence",)
 
         self.outro1 = createFadeableImage("gui/outro1.png", "ts-outro1", True)
-        self.outro2 = createFadeableImage("gui/outro1.png", "ts-outro2", True)
-        self.outro3 = createFadeableImage("gui/outro1.png", "ts-outro3", True)
+        self.outro2 = createFadeableImage("gui/outro2.png", "ts-outro2", True)
+        self.outro3 = createFadeableImage("gui/gameOver1.png", "ts-outro3", True)
         self.outroSequence = Sequence(
             Wait(1.0),
             Func(self.hud.showStory),
@@ -181,11 +181,12 @@ class World(DirectObject, FSM):
                 (0,0,0,1)),
             Func(self.outro2.hide),
             Func(self.outro3.show),
+            Func(self.setEndingStoryText),
             self.outro3.colorScaleInterval(
                 1.5,
                 (0,0,0,1),
                 (0,0,0,0)),
-            Wait(5.0),
+            Wait(10.0),
             self.outro3.colorScaleInterval(
                 1.5,
                 (0,0,0,0),
@@ -216,11 +217,14 @@ class World(DirectObject, FSM):
             Func(base.messenger.send, "GameOver"),
             name="Game Over Sequence",)
 
+        # collision events
         self.acceptOnce("CharacterCollisions-in-tutorial1", self.showTutorial)
-        self.acceptOnce("characterCollisions-in-finish", self.request, extraArgs=["Outro"])
+        self.acceptOnce("CharacterCollisions-in-finish", self.finishGame)
         self.accept("CharacterCollisions-in-PlantGroundCollider", self.enablePlanting)
         self.accept("CharacterCollisions-out-PlantGroundCollider", self.disablePlanting)
         self.accept("CharacterCollisions-in", self.checkCollisions)
+
+        # other events
         self.accept("player-plant_seed", self.doPlantSeed)
         self.accept("f1", self.showTutorial, extraArgs=[None])
         self.accept("addPoints", self.addPoints)
@@ -250,6 +254,9 @@ class World(DirectObject, FSM):
         self.tut2.removeNode()
         self.gameOver1.removeNode()
         self.hud.cleanup()
+
+    def finishGame(self, args):
+        self.request("Outro")
 
     def requestEscape(self):
         if self.state == "Intro":
@@ -295,6 +302,9 @@ class World(DirectObject, FSM):
             self.request("GameOver")
             return
         self.player.setScale(newScale)
+
+    def setEndingStoryText(self):
+        self.hud.setStory(_("You got %d soul points") % self.points)
 
     def enterMain(self):
         """Main state of the world."""

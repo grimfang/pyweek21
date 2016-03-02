@@ -118,6 +118,12 @@ class Level():
             return startPosNode
         return None
 
+    def getEndPoint(self):
+        endPosNode = self.level.find("**/EndPos")
+        if endPosNode:
+            return endPosNode
+        return None
+
     def skyboxTask(self, task):
         self.skybox.setHpr(render, 0, 0, 0)
         return task.cont
@@ -177,29 +183,29 @@ class Level():
                 if plantGroundName == "PlantGround.000":
                     #Bridge 1
                     base.messenger.send("addPoints", [200])
-                    base.messenger.send("drawPlayerWater", [20])
+                    base.messenger.send("drawPlayerWater", [10])
                     plantGroundNP.removeNode()
                     self.bridge1.reparentTo(self.level)
                 elif plantGroundName == "PlantGround.001":
                     #Bridge 2
                     base.messenger.send("addPoints", [300])
-                    base.messenger.send("drawPlayerWater", [20])
+                    base.messenger.send("drawPlayerWater", [10])
                     plantGroundNP.removeNode()
                     self.bridge2.reparentTo(self.level)
                 elif plantGroundName == "PlantGround.002":
                     #Bridge 3
                     base.messenger.send("addPoints", [400])
-                    base.messenger.send("drawPlayerWater", [20])
+                    base.messenger.send("drawPlayerWater", [10])
                     plantGroundNP.removeNode()
                     self.bridge3.reparentTo(self.level)
                 elif plantGroundName == "PlantGround.003":
                     #Bridge 4
                     base.messenger.send("addPoints", [500])
-                    base.messenger.send("drawPlayerWater", [20])
+                    base.messenger.send("drawPlayerWater", [10])
                     plantGroundNP.removeNode()
                     self.bridge4.reparentTo(self.level)
                 else:
                     base.messenger.send("addPoints", [100])
-                    base.messenger.send("drawPlayerWater", [10])
+                    base.messenger.send("drawPlayerWater", [2])
                     plantGround.getIntoNodePath().removeNode()
                 break
