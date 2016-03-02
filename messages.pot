@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2016-02-29 17:31+CET\n"
+"POT-Creation-Date: 2016-03-02 11:49+CET\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,12 +19,16 @@ msgstr ""
 msgid "Plant Seed"
 msgstr ""
 
-#: ./gui/hud.py:31 ./gui/hud.py:58
+#: ./gui/hud.py:42 ./gui/hud.py:98
 msgid "Points: %d"
 msgstr ""
 
-#: ./gui/hud.py:42 ./gui/hud.py:61
+#: ./gui/hud.py:53 ./gui/hud.py:102
 msgid "Remaining Water: %d"
+msgstr ""
+
+#: ./gui/hud.py:65
+msgid "F1 - show help"
 msgstr ""
 
 #: ./gui/mainmenu.py:21
@@ -57,19 +61,51 @@ msgid ""
 "%s"
 msgstr ""
 
-#: ./main.py:244
+#: ./main.py:246
 msgid "Enter Game"
 msgstr ""
 
-#: ./main.py:252
+#: ./main.py:255
 msgid "Exit Game"
 msgstr ""
 
-#: ./world.py:109
+#: ./world.py:89
+msgid "Fire spirits set the forest alight, burning most of the trees and plants..."
+msgstr ""
+
+#: ./world.py:101
+msgid "Soon though rain came and estinguished the raging fires..."
+msgstr ""
+
+#: ./world.py:113
+msgid "A devastating aftermath, it's now up to you to help the forest regrow!"
+msgstr ""
+
+#: ./world.py:125
+msgid "Use W, A, S, D and the mouse to control the character."
+msgstr ""
+
+#: ./world.py:137
+msgid "Press Home to center the camera behind the player."
+msgstr ""
+
+#: ./world.py:159
+msgid "You have done well my little droplets."
+msgstr ""
+
+#: ./world.py:171
+msgid "But... now it's again time to go for you."
+msgstr ""
+
+#: ./world.py:204
+msgid "You did your best and now you're one with the nature."
+msgstr ""
+
+#: ./world.py:301
 msgid "Enter World"
 msgstr ""
 
-#: ./world.py:121
+#: ./world.py:314
 msgid "Exit World"
 msgstr ""
 
