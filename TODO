@@ -1,3 +1,6 @@
 Fix seed cleanup
 place npc next to planting field to make clear the player can plant a seed there
 enhanced menu background
+replace images in the manual with ones that:
+	1) are in english
+	2) don't show debug information (i.e. rosa spheres around seeds)
