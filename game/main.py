@@ -48,7 +48,7 @@ See License.txt or http://opensource.org/licenses/BSD-2-Clause for more info
 # set the application Name
 __builtin__.companyName = "Grimfang Studio"
 __builtin__.appName = "Little Drop"
-__builtin__.versionstring = "16.02"
+__builtin__.versionstring = "16.03"
 home = os.path.expanduser("~")
 __builtin__.basedir = os.path.join(
     home,

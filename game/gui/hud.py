@@ -21,6 +21,17 @@ class HUD():
         self.canPlantLabel.reparentTo(base.a2dBottomCenter)
         self.canPlantLabel.hide()
 
+        self.speekLabel = DirectLabel(
+            frameColor=(0, 0, 0, 0.25),
+            text_fg=(1, 1, 1, 1),
+            scale=0.1,
+            pos=(0, 0, 0.5),
+            pad=(0.2,0.2),
+            text="...")
+        self.speekLabel.setTransparency(True)
+        self.speekLabel.reparentTo(base.a2dBottomCenter)
+        self.speekLabel.hide()
+
         self.storyText = DirectLabel(
             frameColor=(0, 0, 0, 0.25),
             text_fg=(1, 1, 1, 1),
@@ -84,6 +95,7 @@ class HUD():
 
     def cleanup(self):
         self.canPlantLabel.destroy()
+        self.speekLabel.destroy()
         self.points.destroy()
         self.playerWater.destroy()
         self.helpInfo.destroy()
@@ -105,3 +117,12 @@ class HUD():
     def setStory(self, storytext):
         self.storyText["text"] = storytext
         self.storyText.resetFrameSize()
+
+    def showSpeekText(self, text):
+        self.speekLabel["text"] = text
+        self.speekLabel.resetFrameSize()
+        self.speekLabel.show()
+
+    def hideSpeekText(self):
+        self.speekLabel.hide()
+

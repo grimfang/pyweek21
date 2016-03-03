@@ -224,6 +224,31 @@ class World(DirectObject, FSM):
         self.accept("CharacterCollisions-out-PlantGroundCollider", self.disablePlanting)
         self.accept("CharacterCollisions-in", self.checkCollisions)
 
+        # Speeking with other Droplets
+        self.accept("CharacterCollisions-in-Speek_AlmostDone", self.showText, extraArgs=[_("You almost reached the end")])
+        self.accept("CharacterCollisions-out-Speek_AlmostDone", self.hideText)
+        self.accept("CharacterCollisions-in-Speek_Hi", self.showText, extraArgs=[_("Hi!")])
+        self.accept("CharacterCollisions-out-Speek_Hi", self.hideText)
+        self.accept("CharacterCollisions-in-Speek_NoSeeds", self.theFriendlyDroplet)
+        self.accept("CharacterCollisions-out-Speek_NoSeeds", self.hideText)
+        self.accept("CharacterCollisions-in-Speek_PlantHere", self.showText, extraArgs=[_("Go on, plant a seed here!")])
+        self.accept("CharacterCollisions-out-Speek_PlantHere", self.hideText)
+        self.accept("CharacterCollisions-in-Speek_GoAway", self.goAway1)
+        self.accept("CharacterCollisions-out-Speek_GoAway", self.hideText)
+        self.accept("CharacterCollisions-in-Speek_SoTired", self.showText, extraArgs=[_("I'm tired, I planted to many seeds.")])
+        self.accept("CharacterCollisions-out-Speek_SoTired", self.hideText)
+        self.accept("CharacterCollisions-in-Speek_Fungies", self.showText, extraArgs=[_("Fungi 1: I hope such a fire never comes again\nFungi 2: Me too\nFungi 3: Do you smell the smoke o.O")])
+        self.accept("CharacterCollisions-out-Speek_Fungies", self.hideText)
+        self.accept("CharacterCollisions-in-Speek_MysteriousVoice", self.showText, extraArgs=[_("Voice from above: Hey you there, little droplet, it's me, the creator.\nYou: are you god?\nVoice from above: No, just the developer :P...")])
+        self.accept("CharacterCollisions-out-Speek_MysteriousVoice", self.hideText)
+        self.accept("CharacterCollisions-in-Speek_LonelyRock", self.findTheLonlyRock)
+        self.accept("CharacterCollisions-out-Speek_LonelyRock", self.hideText)
+
+
+
+
+        self.accept("Bridge1_Built", self.changeSpeaker1)
+
         # other events
         self.accept("player-plant_seed", self.doPlantSeed)
         self.accept("f1", self.showTutorial, extraArgs=[None])
@@ -268,6 +293,56 @@ class World(DirectObject, FSM):
     def showTutorial(self, args):
         if not self.tutorialInterval.isPlaying():
             self.tutorialInterval.start()
+
+    def showText(self, text, args):
+        self.hud.showSpeekText(text)
+
+    def hideText(self, args):
+        self.hud.hideSpeekText()
+
+    def goAway1(self, args):
+        self.hud.showSpeekText(_("I'm just standing here, go away..."))
+        self.ignore("CharacterCollisions-in-Speek_GoAway")
+        self.accept("CharacterCollisions-in-Speek_GoAway", self.goAway2)
+
+    def goAway2(self, args):
+        self.hud.showSpeekText(_("Go away, please..."))
+        self.ignore("CharacterCollisions-in-Speek_GoAway")
+        self.accept("CharacterCollisions-in-Speek_GoAway", self.goAway3)
+
+    def goAway3(self, args):
+        self.hud.showSpeekText(_("Take some of my water but now go away, please..."))
+        self.water += 20
+        self.points += 10
+        self.hud.setWater(self.water)
+        self.hud.setPoints(self.points)
+        newScale = self.water/100.0
+        self.player.setScale(newScale)
+        self.ignore("CharacterCollisions-in-Speek_GoAway")
+        self.accept("CharacterCollisions-in-Speek_GoAway", self.goAway4)
+
+    def goAway4(self, args):
+        self.hud.showSpeekText(_("..."))
+
+    def findTheLonlyRock(self, args):
+        self.points += 50
+        self.hud.setPoints(self.points)
+        self.hud.showSpeekText(_("Lonely Rock: No one ever talks to me ;(\nYou: Poor little rock *pat pat*"))
+        self.accept("CharacterCollisions-in-Speek_LonelyRock", self.showText, extraArgs=[_("Lonely Rock: No one ever talks to me ;(\nYou: Poor little rock *pat pat*")])
+
+    def theFriendlyDroplet(self, args):
+        self.hud.showSpeekText(_("Up here are no seeds, but take some of this water!"))
+        self.water += 10
+        self.points += 10
+        self.hud.setWater(self.water)
+        self.hud.setPoints(self.points)
+        newScale = self.water/100.0
+        self.player.setScale(newScale)
+        self.accept("CharacterCollisions-in-Speek_NoSeeds", self.showText, extraArgs=[_("Up here are no seeds...")])
+
+    def changeSpeaker1(self):
+        self.ignore("CharacterCollisions-in-Speek_PlantHere")
+        self.accept("CharacterCollisions-in-Speek_PlantHere", self.showText, extraArgs=[_("Awesome!")])
 
     def checkCollisions(self, args):
         if "seedSphere" in args.getIntoNode().getName():

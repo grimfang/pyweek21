@@ -9,6 +9,7 @@ from panda3d.core import (
     AmbientLight,
     VBase4,
     CullBinAttrib,
+    ColorBlendAttrib,
     Fog,)
 
 from panda3d.core import Plane, PlaneNode, TransparencyAttrib, Texture, Vec3, Point3, NodePath, TextureStage, CullFaceAttrib, BitMask32
@@ -66,8 +67,9 @@ class Level():
         self.level.setPos(0, 0, -2)
 
         # spawn NPCs
+        self.numNPCs = 15
         self.npcList = []
-        for i in range(12):
+        for i in range(self.numNPCs):
             npc = Actor(
                 "character/character",
                 {"Idle": "character/character-Idle"})
@@ -78,12 +80,31 @@ class Level():
             npc.reparentTo(point)
             self.npcList.append(npc)
 
+        alphaSettings = ColorBlendAttrib.make(
+            ColorBlendAttrib.MAdd,
+            ColorBlendAttrib.OIncomingAlpha,
+            ColorBlendAttrib.OOne,
+            (0, 0, 0, 0))
+        for np in self.level.findAllMatches("**/Godray*"):
+            np.setAttrib(alphaSettings)
+            np.setBin("fixed", 10)
+            np.setDepthWrite(False)
+            #np.setLightOff(3)
+            #np.setShaderOff(3)
+
+        water = self.level.find("**/Water")
+        water.setAttrib(alphaSettings)
+        water.setBin("fixed", 11)
+        water.setDepthWrite(False)
+        #water.setLightOff(3)
+        #water.setShaderOff(3)
+
         ## Seeds ##
         self.numSeedPositions = 20
         self.tutorialSeed = None
         self.spawnedSeeds = {}
 
-        self.spawnSeeds(7)
+        self.spawnSeeds(15)
 
     def stop(self):
         self.clearSeeds()
@@ -182,6 +203,7 @@ class Level():
                 base.cTrav.removeCollider(plantGround.getIntoNodePath())
                 if plantGroundName == "PlantGround.000":
                     #Bridge 1
+                    base.messenger.send("Bridge1_Built")
                     base.messenger.send("addPoints", [200])
                     base.messenger.send("drawPlayerWater", [10])
                     plantGroundNP.removeNode()
@@ -195,17 +217,17 @@ class Level():
                 elif plantGroundName == "PlantGround.002":
                     #Bridge 3
                     base.messenger.send("addPoints", [400])
-                    base.messenger.send("drawPlayerWater", [10])
+                    base.messenger.send("drawPlayerWater", [15])
                     plantGroundNP.removeNode()
                     self.bridge3.reparentTo(self.level)
                 elif plantGroundName == "PlantGround.003":
                     #Bridge 4
                     base.messenger.send("addPoints", [500])
-                    base.messenger.send("drawPlayerWater", [10])
+                    base.messenger.send("drawPlayerWater", [20])
                     plantGroundNP.removeNode()
                     self.bridge4.reparentTo(self.level)
                 else:
                     base.messenger.send("addPoints", [100])
-                    base.messenger.send("drawPlayerWater", [2])
+                    base.messenger.send("drawPlayerWater", [5])
                     plantGround.getIntoNodePath().removeNode()
                 break
