@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-03-02 11:49+0100\n"
-"PO-Revision-Date: 2016-03-02 11:50+0100\n"
+"POT-Creation-Date: 2016-03-04 01:28+0100\n"
+"PO-Revision-Date: 2016-03-04 01:29+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -20,43 +20,47 @@ msgstr ""
 msgid "Plant Seed"
 msgstr "Pflanze Samen"
 
-#: gui/hud.py:42 gui/hud.py:98
+#: gui/hud.py:56 gui/hud.py:123
 msgid "Points: %d"
 msgstr "Punkte: %d"
 
-#: gui/hud.py:53 gui/hud.py:102
+#: gui/hud.py:67 gui/hud.py:127
 msgid "Remaining Water: %d"
 msgstr "Vorhandenes Wasser: %d"
 
-#: gui/hud.py:65
+#: gui/hud.py:79
 msgid "F1 - show help"
 msgstr "F1 - Zeige Hilfe"
 
-#: gui/mainmenu.py:21
+#: gui/loadingscreen.py:54
+msgid "Loading..."
+msgstr "Lade..."
+
+#: gui/mainmenu.py:31
 msgid "Start"
 msgstr "Start"
 
-#: gui/mainmenu.py:24
+#: gui/mainmenu.py:34
 msgid "Options"
 msgstr "Optionen"
 
-#: gui/mainmenu.py:27
+#: gui/mainmenu.py:37
 msgid "Quit"
 msgstr "Beenden"
 
-#: gui/optionsmenu.py:38
+#: gui/optionsmenu.py:49
 msgid "Back"
 msgstr "Zurück"
 
-#: gui/optionsmenu.py:48 gui/optionsmenu.py:113
+#: gui/optionsmenu.py:59 gui/optionsmenu.py:124
 msgid "Volume %d%%"
 msgstr "Lautstärke %d%%"
 
-#: gui/optionsmenu.py:67
+#: gui/optionsmenu.py:78
 msgid "Mute Audio"
 msgstr "Stumm schalten"
 
-#: gui/optionsmenu.py:88
+#: gui/optionsmenu.py:99
 msgid ""
 "Advanced options can be made in the following text file\n"
 "%s"
@@ -64,44 +68,51 @@ msgstr ""
 "Erweiterte Einstellungen können in folgender Textdatei gemacht werden\n"
 "%s"
 
-#: main.py:246
+#: main.py:322
 msgid "Enter Game"
 msgstr "Betrete Spiel"
 
-#: main.py:255
+#: main.py:332
 msgid "Exit Game"
 msgstr "Verlasse Spiel"
 
-#: world.py:89
+#: world.py:88
 msgid ""
-"Fire spirits set the forest alight, burning most of the trees and plants..."
+"Fire spirits set the forest alight,\n"
+"burning most of the trees and plants..."
 msgstr ""
-"Feuergeister setzten den Wald in Brand, die meisten Bäume und Pflanzen "
-"verbrannten..."
+"Feuergeister setzten den Wald in Brand,\n"
+"die meisten Bäume und Pflanzen verbrannten..."
 
-#: world.py:101
-msgid "Soon though rain came and estinguished the raging fires..."
-msgstr "Bald jedoch kam regen und löschte die wütenden Flammen..."
-
-#: world.py:113
-msgid "A devastating aftermath, it's now up to you to help the forest regrow!"
+#: world.py:100
+msgid ""
+"Soon though rain came\n"
+"and estinguished the raging fires..."
 msgstr ""
-"Die Folgen waren verheerend, jetzt liegt es an dir zu helfen den Wald wieder "
-"aufzuforsten!"
+"Bald jedoch kam regen\n"
+"und löschte die wütenden Flammen..."
 
-#: world.py:125
+#: world.py:112
+msgid ""
+"A devastating aftermath, it's now up to you\n"
+"to help the forest regrow!"
+msgstr ""
+"Die Folgen waren verheerend, jetzt liegt es an dir \n"
+"zu helfen den Wald wieder aufzuforsten!"
+
+#: world.py:124
 msgid "Use W, A, S, D and the mouse to control the character."
 msgstr "Benutze W, A, S, D und die Maus um den Charakter zu Kontrollieren."
 
-#: world.py:137
+#: world.py:136
 msgid "Press Home to center the camera behind the player."
 msgstr "Drücke Pos1 um die Kamera hinter der Spielfigur zu zentrieren."
 
-#: world.py:159
-msgid "You have done well my little droplets."
-msgstr "Gut gemacht meine kleinen Tröpfchen."
+#: world.py:158
+msgid "Well done little droplets, you have my greatest gratitude."
+msgstr "Gut gemacht kleinen Tröpfchen, ihr habt meine größte Dankbarkeit."
 
-#: world.py:171
+#: world.py:170
 msgid "But... now it's again time to go for you."
 msgstr "Aber... jetzt ist es zeit für euch zu gehen."
 
@@ -109,13 +120,101 @@ msgstr "Aber... jetzt ist es zeit für euch zu gehen."
 msgid "You did your best and now you're one with the nature."
 msgstr "Du hast dein bestes gegeben und bist jetzt eins mit der Natur."
 
-#: world.py:301
+#: world.py:227
+msgid "You almost reached the end"
+msgstr "Du hast es fast zum ende geschaft"
+
+#: world.py:229
+msgid "Hi!"
+msgstr "Hallo!"
+
+#: world.py:233
+msgid "Go on, plant a seed here!"
+msgstr "Los, pflanze hier eine Samen!"
+
+#: world.py:237
+msgid "I'm tired, I planted to many seeds."
+msgstr "Ich bin müde, Ich hab zu viele Samen gepflanzt"
+
+#: world.py:239
+msgid ""
+"Fungi 1: I hope such a fire never comes again\n"
+"Fungi 2: Me too\n"
+"Fungi 3: Do you smell the smoke o.O"
+msgstr ""
+"Pilz 1: Ich hoffe so ein Feuer kommt nie wieder\n"
+"Pilz 2: Ich auch\n"
+"Pilz 3: Könnt ihr den Rauch riechen o.O"
+
+#: world.py:241
+msgid ""
+"Voice from above: Hey you there, little droplet, it's me, the creator.\n"
+"You: are you god?\n"
+"Voice from above: No, just the developer :P..."
+msgstr ""
+"Stimme von oben: Hey du da, kleines Tröpfchen, ich bin es, der Erschaffer.\n"
+"Du: Bist du Gott?\n"
+"Stimme von oben: Nein, nur der Entwickler :P..."
+
+#: world.py:312
+msgid "I'm just standing here, go away..."
+msgstr "Ich steh hier nur, geh weg..."
+
+#: world.py:317
+msgid "Go away, please..."
+msgstr "Geh weg, bitte..."
+
+#: world.py:322
+msgid "Take some of my water but now go away, please..."
+msgstr "Nimm etwas von meinem Wasser aber jetzt geh weg, bitte..."
+
+#: world.py:333
+msgid "..."
+msgstr "..."
+
+#: world.py:338 world.py:339
+msgid ""
+"Lonely Rock: No one ever talks to me ;(\n"
+"You: Poor little rock *pat pat*"
+msgstr ""
+"Einsamer Stein: Niemand spricht mit mir ;(\n"
+"Du: Armer kleiner Stein *pat pat*"
+
+#: world.py:342
+msgid "Up here are no seeds, but take some of this water!"
+msgstr "Hier oben gibt es keine Samen, aber nimm etwas von diesem Wasser!"
+
+#: world.py:349
+msgid "Up here are no seeds..."
+msgstr "Hier oben gibt es keine Samen..."
+
+#: world.py:353
+msgid "Awesome!"
+msgstr "Fantastisch!"
+
+#: world.py:390
+msgid "You got %d soul points"
+msgstr "Du hast %d Seelen Punkte"
+
+#: world.py:394
 msgid "Enter World"
 msgstr "Betrete Welt"
 
-#: world.py:314
+#: world.py:407
 msgid "Exit World"
 msgstr "Verlasse Welt"
+
+#~ msgid "You have done well my little droplets."
+#~ msgstr "Gut gemacht meine kleinen Tröpfchen."
+
+#~ msgid "Fire spirits set the forest alight, burning most of the trees and plants..."
+#~ msgstr "Feuergeister setzten den Wald in Brand, die meisten Bäume und Pflanzen verbrannten..."
+
+#~ msgid "Soon though rain came and estinguished the raging fires..."
+#~ msgstr "Bald jedoch kam regen und löschte die wütenden Flammen..."
+
+#~ msgid "A devastating aftermath, it's now up to you to help the forest regrow!"
+#~ msgstr "Die Folgen waren verheerend, jetzt liegt es an dir zu helfen den Wald wieder aufzuforsten!"
 
 #~ msgid "Press Pos 1 to center the camera behind the player."
 #~ msgstr "Drücke Pos1 um die Kamera hinter der Spielfigur zu zentrieren."

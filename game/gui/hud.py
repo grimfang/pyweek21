@@ -5,7 +5,7 @@
 # PANDA3D ENGINE IMPORTS
 #
 from direct.gui.DirectLabel import DirectLabel
-from panda3d.core import TextNode
+from panda3d.core import TextNode, BillboardEffect
 
 
 class HUD():
@@ -24,13 +24,16 @@ class HUD():
         self.speekLabel = DirectLabel(
             frameColor=(0, 0, 0, 0.25),
             text_fg=(1, 1, 1, 1),
-            scale=0.1,
+            scale=0.15,
             pos=(0, 0, 0.5),
             pad=(0.2,0.2),
             text="...")
-        self.speekLabel.setTransparency(True)
-        self.speekLabel.reparentTo(base.a2dBottomCenter)
+        self.speekLabel.reparentTo(render)
         self.speekLabel.hide()
+        self.speekLabel.setTransparency(True)
+        self.speekLabel.setEffect(BillboardEffect.makePointEye())
+        self.speekLabel.setBin("fixed", 11)
+        self.speekLabel.setDepthWrite(False)
 
         self.storyText = DirectLabel(
             frameColor=(0, 0, 0, 0.25),
@@ -77,12 +80,21 @@ class HUD():
         self.helpInfo.setTransparency(True)
         self.helpInfo.reparentTo(base.a2dTopRight)
 
+        self.hide()
+
     def show(self):
         self.points.show()
         self.playerWater.show()
         self.helpInfo.show()
 
     def hide(self):
+        self.points.hide()
+        self.playerWater.hide()
+        self.helpInfo.hide()
+
+    def hideAll(self):
+        self.canPlantLabel.hide()
+        self.speekLabel.hide()
         self.points.hide()
         self.playerWater.hide()
         self.helpInfo.hide()
@@ -94,6 +106,7 @@ class HUD():
         self.storyText.hide()
 
     def cleanup(self):
+        self.hideAll()
         self.canPlantLabel.destroy()
         self.speekLabel.destroy()
         self.points.destroy()
@@ -118,7 +131,8 @@ class HUD():
         self.storyText["text"] = storytext
         self.storyText.resetFrameSize()
 
-    def showSpeekText(self, text):
+    def showSpeekText(self, text, newPos):
+        self.speekLabel.setPos(newPos)
         self.speekLabel["text"] = text
         self.speekLabel.resetFrameSize()
         self.speekLabel.show()

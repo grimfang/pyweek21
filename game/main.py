@@ -24,7 +24,17 @@ from panda3d.core import (
     Filename,
     VirtualFileSystem,
     CollisionTraverser,
-    AudioSound,)
+    AudioSound,
+    CardMaker,
+    NodePath,
+    TransparencyAttrib,
+    TextureStage,
+    LVecBase4f,)
+from direct.interval.IntervalGlobal import Sequence
+from direct.interval.FunctionInterval import (
+    Wait,
+    Func)
+from direct.interval.LerpInterval import LerpColorScaleInterval
 
 from panda3d.physics import (
     ForceNode,
@@ -34,6 +44,7 @@ from panda3d.physics import (
 from core import helper
 from gui.mainmenu import Mainmenu
 from gui.optionsmenu import Optionsmenu
+from gui.loadingscreen import LoadingScreen
 from world import World
 
 __author__ = "Fireclaw the Fox"
@@ -120,11 +131,11 @@ class Main(ShowBase, FSM):
         #
         # disable pandas default camera driver
         self.disableMouse()
-        helper.show_cursor()
         # set background color to black
         self.setBackgroundColor(0, 0, 0)
         # set antialias for the complete sceen to automatic
         self.render.setAntialias(AntialiasAttrib.MAuto)
+        helper.hide_cursor()
 
         #
         # CONFIGURATION LOADING
@@ -189,17 +200,80 @@ class Main(ShowBase, FSM):
         # Menus
         self.mainmenu = Mainmenu()
         self.optionsmenu = Optionsmenu()
+        self.loadingscreen = LoadingScreen()
+
+        self.music_menu = loader.loadMusic("music/menu.ogg")
+        self.music_menu.setLoop(True)
+        self.music_game = loader.loadMusic("music/game.ogg")
+        self.music_game.setLoop(True)
+        self.music_intro = loader.loadMusic("music/logos.ogg")
+
+        # The games Intro
+        def create16To9LogoCard(logoPath, tsName):
+            cm = CardMaker("fade")
+            scale = abs(base.a2dLeft) / 1.7776
+            cm.setFrame(-1, 1, -1*scale, 1*scale)
+            logo = NodePath(cm.generate())
+            logo.setTransparency(TransparencyAttrib.MAlpha)
+            logoTex = loader.loadTexture(logoPath)
+            logoTs = TextureStage(tsName)
+            logoTs.setMode(TextureStage.MReplace)
+            logo.setTexture(logoTs, logoTex)
+            logo.setBin("fixed", 5000)
+            logo.reparentTo(render2d)
+            logo.hide()
+            return logo
+        self.gfLogo = create16To9LogoCard("intro/GrimFangLogo.png", "gfLogoTS")
+        self.pandaLogo = create16To9LogoCard("intro/Panda3DLogo.png", "pandaLogoTS")
+        self.gameLogo = create16To9LogoCard("intro/GameLogo.png", "gameLogoTS")
+        def createFadeIn(logo):
+            return LerpColorScaleInterval(
+                logo,
+                2,
+                LVecBase4f(0.0, 0.0, 0.0, 1.0),
+                LVecBase4f(0.0, 0.0, 0.0, 0.0))
+        def createFadeOut(logo):
+            return LerpColorScaleInterval(
+                logo,
+                2,
+                LVecBase4f(0.0, 0.0, 0.0, 0.0),
+                LVecBase4f(0.0, 0.0, 0.0, 1.0))
+        gfFadeInInterval = createFadeIn(self.gfLogo)
+        gfFadeOutInterval = createFadeOut(self.gfLogo)
+        p3dFadeInInterval = createFadeIn(self.pandaLogo)
+        p3dFadeOutInterval = createFadeOut(self.pandaLogo)
+        gameFadeInInterval = createFadeIn(self.gameLogo)
+        gameFadeOutInterval = createFadeOut(self.gameLogo)
+        self.introFadeInOutSequence = Sequence(
+            Func(self.music_intro.play),
+            Func(self.gfLogo.show),
+            gfFadeInInterval,
+            Wait(1.0),
+            gfFadeOutInterval,
+            Wait(0.5),
+            Func(self.gfLogo.hide),
+            Func(self.pandaLogo.show),
+            p3dFadeInInterval,
+            Wait(1.0),
+            p3dFadeOutInterval,
+            Wait(0.5),
+            Func(self.pandaLogo.hide),
+            Func(self.gameLogo.show),
+            gameFadeInInterval,
+            Wait(1.0),
+            gameFadeOutInterval,
+            Wait(0.5),
+            Func(self.gameLogo.hide),
+            Func(self.messenger.send, "intro_done"),
+            Func(self.music_intro.stop),
+            name="fadeInOut")
+        # game intro end
 
         # collision setup
         base.cTrav = CollisionTraverser("base collision traverser")
         base.cTrav.setRespectPrevTransform(True)
         # setup default physics
         base.enableParticles()
-
-        self.music_menu = loader.loadMusic("music/menu.ogg")
-        self.music_menu.setLoop(True)
-        self.music_game = loader.loadMusic("music/game.ogg")
-        self.music_game.setLoop(True)
 
         #
         # Event handling
@@ -214,9 +288,10 @@ class Main(ShowBase, FSM):
         self.accept("GameOver", self.demand, ["Menu"])
 
         #
-        # Start with the menu
+        # Start with the menu after the intro has been played
         #
-        self.request("Menu")
+        self.introFadeInOutSequence.start()
+        self.accept("intro_done", self.request, ["Menu"])
 
     #
     # FSM PART
@@ -224,6 +299,7 @@ class Main(ShowBase, FSM):
 
     def enterMenu(self):
         """Enter the main menu state"""
+        helper.show_cursor()
         self.mainmenu.show()
         if self.music_menu.status() != AudioSound.PLAYING:
             self.music_menu.play()
@@ -244,11 +320,12 @@ class Main(ShowBase, FSM):
     def enterGame(self):
         # main game code should be called here
         print _("Enter Game")
+        self.loadingscreen.start()
         helper.hide_cursor()
+        self.world = World()
         self.music_menu.stop()
         self.music_game.play()
-        self.world = World()
-        self.world.start()
+        self.loadingscreen.stop()
 
     def exitGame(self):
         # cleanup for game code
@@ -266,7 +343,9 @@ class Main(ShowBase, FSM):
     #
 
     def __escape(self):
-        if self.state == "Menu":
+        if self.state == "Off":
+            self.introFadeInOutSequence.finish()
+        elif self.state == "Menu":
             self.quit()
         elif self.state == "Game":
             if self.world.requestEscape():

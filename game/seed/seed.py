@@ -14,7 +14,6 @@ See License.txt or http://opensource.org/licenses/BSD-2-Clause for more info
 
 class Seed():
     def __init__(self):
-
         self.id = "seed" + str(id(self))
         self.seed = None
         self.cnodePath = None
@@ -25,14 +24,13 @@ class Seed():
         # Growing = 3
         self.seedState = None
 
-    def OnSpawn(self, pos):
+    def OnSpawn(self, parent):
         # Spawn in world (default)
 
         # Load a model for now its just one.
         self.seed = loader.loadModel("./assets/seed/seed")
-        self.SetParent(render)
-        posn = (pos.x, pos.y, pos.z-1)
-        self.seed.setPos(posn)
+        self.seedNP = self.seed.reparentTo(parent)
+        self.seed.setZ(1)
 
         # Collision body
         cs = CollisionSphere(0, 0, 0, 0.4)
@@ -41,43 +39,33 @@ class Seed():
         self.cnodePath.node().addSolid(cs)
         self.cnodePath.node().setIntoCollideMask(BitMask32(0x80))  # 1000 0000
 
-        self.cnodePath.show()
+        #self.cnodePath.show()
 
         self.seedState = 0
 
     def DoPlantSeed(self, plantingGround):
         npos = (0, 0, 0)
         self.seed.setHpr(0, 0, 90)
-        self.SetParent(plantingGround)
+        self.seedNP = self.seed.reparentTo(plantingGround)
         self.seed.setPos(npos)
         self.OnPlanted()
 
     def OnPlanted(self):
         # Start growing timer /check /things
         self.seedState = 2
-        print "SEED PLANTED, START GROWING!!"
 
     def DoPickup(self, player):
         # When the player touches the object "seed"
         self.seedState = 1
         self.RemoveCollisionNode()
-        self.SetParent(player.mainNode)
+        self.seedNP = self.seed.reparentTo(player.mainNode)
         self.seed.setPos(0, 0, player.player_height+0.2)
-
-
-    def SetParent(self, newParent):
-        if self.seed != None:
-            self.seed.reparentTo(newParent)
-        else:
-            print "No seed object spawned"
 
     def RemoveCollisionNode(self):
         if self.cnodePath != None:
             base.cTrav.removeCollider(self.cnodePath)
             self.cnodePath.removeNode()
-            #self.cnodePath.hide()
 
     def Destroy(self):
         self.RemoveCollisionNode()
         self.seed.removeNode()
-        self.cnodePath = None

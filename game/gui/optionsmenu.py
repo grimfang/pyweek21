@@ -24,6 +24,16 @@ import menuHelper
 class Optionsmenu():
     def __init__(self):
         self.frameMain = DirectFrame(
+            image="gui/MenuBackground.png",
+            image_scale=(1.7778, 1, 1),
+            #image_pos=(0, 0, 0.25),
+            frameSize=(
+                base.a2dLeft, base.a2dRight,
+                base.a2dTop, base.a2dBottom),
+            frameColor=(0,0,0,0))
+        self.frameMain.setTransparency(True)
+
+        self.logo = DirectFrame(
             image="Logo.png",
             image_scale=0.25,
             image_pos=(0, 0, 0.55),
@@ -31,7 +41,8 @@ class Optionsmenu():
                 base.a2dLeft, base.a2dRight,
                 base.a2dTop, base.a2dBottom),
             frameColor=(0,0,0,0))
-        self.frameMain.setTransparency(True)
+        self.logo.reparentTo(self.frameMain)
+
 
         btnGeom = "gui/button"
 

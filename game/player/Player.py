@@ -12,7 +12,7 @@ import logging
 from direct.actor.Actor import Actor
 from direct.fsm.FSM import FSM
 from direct.showbase.DirectObject import DirectObject
-from panda3d.core import WindowProperties
+from panda3d.core import WindowProperties, ColorBlendAttrib
 
 #
 # CHARACTER SPECIFIC IMPORTS
@@ -96,6 +96,15 @@ class Player(FSM, Config, Physics, Actor, Camera, Control, Animator):
             })
         self.setBlend(frameBlend=self.enable_interpolation)
 
+        alphaSettings = ColorBlendAttrib.make(
+            ColorBlendAttrib.MAdd,
+            ColorBlendAttrib.OIncomingAlpha,
+            ColorBlendAttrib.OOne,
+            (0, 0, 0, 0))
+        #self.setAttrib(alphaSettings)
+        self.setBin("fixed", 15)
+        self.setDepthWrite(False)
+
         #
         # CONTROLS SETUP
         #
@@ -134,6 +143,7 @@ class Player(FSM, Config, Physics, Actor, Camera, Control, Animator):
         logging.debug("stop player...")
         logging.debug("...stop control...")
         self.stopControl()
+        self.walk_sound.stop()
         logging.debug("...stop camera...")
         self.stopCamera()
         logging.debug("...stop base...")
@@ -166,7 +176,5 @@ class Player(FSM, Config, Physics, Actor, Camera, Control, Animator):
         base.messenger.send("player-plant_seed")
 
     def doPickupSeed(self, args):
-
-        #
         pass
 

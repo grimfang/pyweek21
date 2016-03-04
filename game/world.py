@@ -39,10 +39,9 @@ class World(DirectObject, FSM):
         self.points = 0
         self.water = 100
 
-        self.hud = HUD()
+        self.levelLoaded = False
 
-        self.level = Level(self.player)
-        self.level.hide()
+        self.hud = HUD()
 
         def createFadeableImage(img, tsName, big=False):
             cm = CardMaker("FadableCard")
@@ -86,7 +85,7 @@ class World(DirectObject, FSM):
             Wait(1.0),
             Func(self.hud.showStory),
             Func(self.intro1.show),
-            Func(self.hud.setStory, _("Fire spirits set the forest alight, burning most of the trees and plants...")),
+            Func(self.hud.setStory, _("Fire spirits set the forest alight,\nburning most of the trees and plants...")),
             self.intro1.colorScaleInterval(
                 1.5,
                 (0,0,0,1),
@@ -98,7 +97,7 @@ class World(DirectObject, FSM):
                 (0,0,0,1)),
             Func(self.intro1.hide),
             Func(self.intro2.show),
-            Func(self.hud.setStory, _("Soon though rain came and estinguished the raging fires...")),
+            Func(self.hud.setStory, _("Soon though rain came\nand estinguished the raging fires...")),
             self.intro2.colorScaleInterval(
                 1.5,
                 (0,0,0,1),
@@ -110,7 +109,7 @@ class World(DirectObject, FSM):
                 (0,0,0,1)),
             Func(self.intro2.hide),
             Func(self.intro3.show),
-            Func(self.hud.setStory, _("A devastating aftermath, it's now up to you to help the forest regrow!")),
+            Func(self.hud.setStory, _("A devastating aftermath, it's now up to you\nto help the forest regrow!")),
             self.intro3.colorScaleInterval(
                 1.5,
                 (0,0,0,1),
@@ -156,7 +155,7 @@ class World(DirectObject, FSM):
             Wait(1.0),
             Func(self.hud.showStory),
             Func(self.outro1.show),
-            Func(self.hud.setStory, _("You have done well my little droplets.")),
+            Func(self.hud.setStory, _("Well done little droplets, you have my greatest gratitude.")),
             self.outro1.colorScaleInterval(
                 1.5,
                 (0,0,0,1),
@@ -244,9 +243,6 @@ class World(DirectObject, FSM):
         self.accept("CharacterCollisions-in-Speek_LonelyRock", self.findTheLonlyRock)
         self.accept("CharacterCollisions-out-Speek_LonelyRock", self.hideText)
 
-
-
-
         self.accept("Bridge1_Built", self.changeSpeaker1)
 
         # other events
@@ -255,12 +251,20 @@ class World(DirectObject, FSM):
         self.accept("addPoints", self.addPoints)
         self.accept("drawPlayerWater", self.drawPlayerWater)
 
+        self.accept("LevelLoaded", self.start)
+        self.level = Level(self.player)
+
     def start(self):
-        self.request("Main")
+        self.levelLoaded = True
+        #self.request("Main")
         self.request("Intro")
 
     def stop(self):
         """Stop all game components and ignores all events"""
+        startPoint = self.level.getStartPoint()
+        if startPoint is not None:
+            self.player.setStartPos(startPoint.getPos())
+            self.player.setStartHpr(startPoint.getHpr())
         helper.show_cursor()
         self.ignoreAll()
         self.player.stopPlayer()
@@ -278,12 +282,15 @@ class World(DirectObject, FSM):
         self.tut1.removeNode()
         self.tut2.removeNode()
         self.gameOver1.removeNode()
+        self.hud.hideSpeekText()
         self.hud.cleanup()
 
     def finishGame(self, args):
         self.request("Outro")
 
     def requestEscape(self):
+        if not self.levelLoaded:
+            return False
         if self.state == "Intro":
             self.request("Main")
             return False
@@ -295,23 +302,24 @@ class World(DirectObject, FSM):
             self.tutorialInterval.start()
 
     def showText(self, text, args):
-        self.hud.showSpeekText(text)
+        np = args.getIntoNodePath()
+        self.hud.showSpeekText(text, np.getPos())
 
     def hideText(self, args):
         self.hud.hideSpeekText()
 
     def goAway1(self, args):
-        self.hud.showSpeekText(_("I'm just standing here, go away..."))
+        self.showText(_("I'm just standing here, go away..."), args)
         self.ignore("CharacterCollisions-in-Speek_GoAway")
         self.accept("CharacterCollisions-in-Speek_GoAway", self.goAway2)
 
     def goAway2(self, args):
-        self.hud.showSpeekText(_("Go away, please..."))
+        self.showText(_("Go away, please..."), args)
         self.ignore("CharacterCollisions-in-Speek_GoAway")
         self.accept("CharacterCollisions-in-Speek_GoAway", self.goAway3)
 
     def goAway3(self, args):
-        self.hud.showSpeekText(_("Take some of my water but now go away, please..."))
+        self.showText(_("Take some of my water but now go away, please..."), args)
         self.water += 20
         self.points += 10
         self.hud.setWater(self.water)
@@ -322,16 +330,16 @@ class World(DirectObject, FSM):
         self.accept("CharacterCollisions-in-Speek_GoAway", self.goAway4)
 
     def goAway4(self, args):
-        self.hud.showSpeekText(_("..."))
+        self.showText(_("..."), args)
 
     def findTheLonlyRock(self, args):
         self.points += 50
         self.hud.setPoints(self.points)
-        self.hud.showSpeekText(_("Lonely Rock: No one ever talks to me ;(\nYou: Poor little rock *pat pat*"))
+        self.showText(_("Lonely Rock: No one ever talks to me ;(\nYou: Poor little rock *pat pat*"), args)
         self.accept("CharacterCollisions-in-Speek_LonelyRock", self.showText, extraArgs=[_("Lonely Rock: No one ever talks to me ;(\nYou: Poor little rock *pat pat*")])
 
     def theFriendlyDroplet(self, args):
-        self.hud.showSpeekText(_("Up here are no seeds, but take some of this water!"))
+        self.showText(_("Up here are no seeds, but take some of this water!"), args)
         self.water += 10
         self.points += 10
         self.hud.setWater(self.water)
@@ -401,12 +409,13 @@ class World(DirectObject, FSM):
         self.player.pausePlayer()
 
     def enterIntro(self):
+        self.hud.hide()
         self.player.showCharFront()
         self.introSequence.start()
 
     def exitIntro(self):
         helper.center_cursor()
-        self.player.centerCamera()
+        #self.player.centerCamera()
         self.introSequence.finish()
 
     def enterOutro(self):

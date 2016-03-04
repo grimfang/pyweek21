@@ -28,7 +28,13 @@ class Level():
     def __init__(self, player):
         self.player = player
 
-        self.skybox = loader.loadModel("skybox/Skybox")
+        loader.loadModel("skybox/Skybox", callback=self.skyBoxDone)
+
+        # Visual model "Ground"
+        loader.loadModel("forest/Forest", callback=self.levelDone)
+
+    def skyBoxDone(self, model):
+        self.skybox = model
         self.skybox.setScale(0.8)
         self.skybox.setPos(0, 0, 0.5)
         self.skybox.setDepthTest(False)
@@ -36,22 +42,11 @@ class Level():
         self.skybox.reparentTo(camera)
         taskMgr.add(self.skyboxTask, "forestsky")
 
-        # Visual model "Ground"
-        self.level = loader.loadModel("forest/Forest")
+    def levelDone(self, model):
+        self.level = model
+        self.level.hide()
         self.level.reparentTo(render)
-
-        # Extra Collision solids
-        self.bridge1 = loader.loadModel("forest/Bridge1")
-        self.bridge2 = loader.loadModel("forest/Bridge2")
-        self.bridge3 = loader.loadModel("forest/Bridge3")
-        self.bridge4 = loader.loadModel("forest/Bridge4")
-
-        # some light green fog
-        self.fog = Fog("Forest Fog")
-        self.fog.setColor(0.0, 0.9, 0.7)
-        self.fog.setExpDensity(0.01)
-        self.skybox.setFog(self.fog)
-        render.setFog(self.fog)
+        self.level.setPos(0, 0, -2)
 
     	# lights for this world
     	directLight = DirectionalLight("directLight")
@@ -64,8 +59,6 @@ class Level():
         ambientLightNP = self.level.attachNewNode(ambientLight)
         render.setLight(ambientLightNP)
 
-        self.level.setPos(0, 0, -2)
-
         # spawn NPCs
         self.numNPCs = 15
         self.npcList = []
@@ -74,12 +67,15 @@ class Level():
                 "character/character",
                 {"Idle": "character/character-Idle"})
             npc.setBlend(frameBlend=True)
-            npc.setScale(random.uniform(0.25, 1.0))
+            npc.setScale(random.uniform(0.4, 1.0))
             npc.loop("Idle")
             point = self.level.find("**/NPC.%03d"%i)
             npc.reparentTo(point)
             self.npcList.append(npc)
 
+        #
+        # Fix alpha problems
+        #
         alphaSettings = ColorBlendAttrib.make(
             ColorBlendAttrib.MAdd,
             ColorBlendAttrib.OIncomingAlpha,
@@ -89,15 +85,24 @@ class Level():
             np.setAttrib(alphaSettings)
             np.setBin("fixed", 10)
             np.setDepthWrite(False)
-            #np.setLightOff(3)
-            #np.setShaderOff(3)
-
         water = self.level.find("**/Water")
         water.setAttrib(alphaSettings)
         water.setBin("fixed", 11)
         water.setDepthWrite(False)
-        #water.setLightOff(3)
-        #water.setShaderOff(3)
+
+        # Extra Collision solids
+        loader.loadModel("forest/Bridge1", callback=self.bridge1Done)
+        loader.loadModel("forest/Bridge2", callback=self.bridge2Done)
+        loader.loadModel("forest/Bridge3", callback=self.bridge3Done)
+        loader.loadModel("forest/Bridge4", callback=self.bridge4Done)
+        loader.loadModel("forest/Plant1", callback=self.plant1Done)
+        loader.loadModel("forest/Plant2", callback=self.plant2Done)
+
+        # some light green fog
+        self.fog = Fog("Forest Fog")
+        self.fog.setColor(0.0, 0.9, 0.7)
+        self.fog.setExpDensity(0.01)
+        render.setFog(self.fog)
 
         ## Seeds ##
         self.numSeedPositions = 20
@@ -105,6 +110,26 @@ class Level():
         self.spawnedSeeds = {}
 
         self.spawnSeeds(15)
+
+        base.messenger.send("LevelLoaded")
+
+    def bridge1Done(self, model):
+        self.bridge1 = model
+
+    def bridge2Done(self, model):
+        self.bridge2 = model
+
+    def bridge3Done(self, model):
+        self.bridge3 = model
+
+    def bridge4Done(self, model):
+        self.bridge4 = model
+
+    def plant1Done(self, model):
+        self.plant1 = model
+
+    def plant2Done(self, model):
+        self.plant2 = model
 
     def stop(self):
         self.clearSeeds()
@@ -126,8 +151,8 @@ class Level():
         self.level.hide()
 
     def clearSeeds(self):
-        for seed in self.spawnedSeeds:
-            self.spawnedSeeds[seed].Destroy()
+        for seed in self.spawnedSeeds.values():
+            seed.Destroy()
 
         self.tutorialSeed.Destroy()
         self.seedSpawnPositions = []
@@ -152,20 +177,26 @@ class Level():
     def spawnSeeds(self, numOfSeeds):
         self.seedSpawnPositions = self.getSeedSpawnPoints()
 
+        self.usedPositions = []
+
         for idx in range(numOfSeeds):
 
             if idx == 0:
                 spawnPos = self.seedSpawnPositions[0]
                 self.spawnedSeeds[spawnPos.getName()] = Seed()
-                self.spawnedSeeds[spawnPos.getName()].OnSpawn(spawnPos.getPos())
+                self.spawnedSeeds[spawnPos.getName()].OnSpawn(spawnPos)#.getPos(), self.level)
                 self.tutorialSeed = self.spawnedSeeds[spawnPos.getName()]
 
             else:
                 randPos = random.randint(1, len(self.seedSpawnPositions)-1)
+                if randPos in self.usedPositions:
+                    while randPos in self.usedPositions:
+                        randPos = random.randint(1, len(self.seedSpawnPositions)-1)
+                self.usedPositions.append(randPos)
 
                 spawnPos = self.seedSpawnPositions[randPos]
                 self.spawnedSeeds[spawnPos.getName()] = Seed()
-                self.spawnedSeeds[spawnPos.getName()].OnSpawn(spawnPos.getPos())
+                self.spawnedSeeds[spawnPos.getName()].OnSpawn(spawnPos)#.getPos(), self.level)
 
     def getSeedSpawnPoints(self):
         points = []
@@ -181,7 +212,7 @@ class Level():
         seedName = args.getIntoNode().getName()
         for seed in self.spawnedSeeds:
             cid = "seedSphere-" + self.spawnedSeeds[seed].id
-            if cid == seedName and self.spawnedSeeds[seed].seedState == 0:
+            if cid == seedName: # and self.spawnedSeeds[seed].seedState == 0:
                 self.spawnedSeeds[seed].DoPickup(self.player)
 
     def doPlantSeed(self, plantGround):
@@ -190,7 +221,6 @@ class Level():
         self.player.carry_seed = False
         for seed in self.spawnedSeeds:
             if self.spawnedSeeds[seed].seedState == 1:
-                #TODO: Maybe change those dependent on if the plant is a big one, for example those that generate bridges, or a small one.
                 self.spawnedSeeds[seed].DoPlantSeed(plantGround.getIntoNodePath().getParent())
 
                 playerPlantPoint = plantGround.getIntoNodePath().getParent().find("**/PlayerPlantingPos")
@@ -203,31 +233,52 @@ class Level():
                 base.cTrav.removeCollider(plantGround.getIntoNodePath())
                 if plantGroundName == "PlantGround.000":
                     #Bridge 1
+                    def buildBridge1(task):
+                        plantGroundNP.removeNode()
+                        self.bridge1.reparentTo(self.level)
                     base.messenger.send("Bridge1_Built")
                     base.messenger.send("addPoints", [200])
                     base.messenger.send("drawPlayerWater", [10])
-                    plantGroundNP.removeNode()
-                    self.bridge1.reparentTo(self.level)
+                    taskMgr.doMethodLater(3.0, buildBridge1, "Build 1st Bridge")
                 elif plantGroundName == "PlantGround.001":
                     #Bridge 2
+                    def buildBridge2(task):
+                        plantGroundNP.removeNode()
+                        self.bridge2.reparentTo(self.level)
                     base.messenger.send("addPoints", [300])
                     base.messenger.send("drawPlayerWater", [10])
-                    plantGroundNP.removeNode()
-                    self.bridge2.reparentTo(self.level)
+                    taskMgr.doMethodLater(3.0, buildBridge2, "Build 2nd Bridge")
                 elif plantGroundName == "PlantGround.002":
                     #Bridge 3
+                    def buildBridge3(task):
+                        plantGroundNP.removeNode()
+                        self.bridge3.reparentTo(self.level)
                     base.messenger.send("addPoints", [400])
                     base.messenger.send("drawPlayerWater", [15])
-                    plantGroundNP.removeNode()
-                    self.bridge3.reparentTo(self.level)
+                    taskMgr.doMethodLater(3.0, buildBridge3, "Build 3rd Bridge")
                 elif plantGroundName == "PlantGround.003":
                     #Bridge 4
+                    def buildBridge4(task):
+                        plantGroundNP.removeNode()
+                        self.bridge4.reparentTo(self.level)
                     base.messenger.send("addPoints", [500])
                     base.messenger.send("drawPlayerWater", [20])
-                    plantGroundNP.removeNode()
-                    self.bridge4.reparentTo(self.level)
+                    taskMgr.doMethodLater(3.0, buildBridge4, "Build 4th Bridge")
                 else:
+                    def growPlant(task):
+                        if random.choice([True, False]):
+                            self.plant1.setPos(plantGroundNP.getPos(render))
+                            self.plant1.setZ(self.plant1, 2)
+                            self.plant1.setH(random.uniform(0.0, 360.0))
+                            self.plant1.copyTo(self.level)
+                        else:
+                            self.plant2.setPos(plantGroundNP.getPos(render))
+                            self.plant2.setZ(self.plant2, 2)
+                            self.plant2.setH(random.uniform(0.0, 360.0))
+                            self.plant2.copyTo(self.level)
+                        plantGroundNP.removeNode()
                     base.messenger.send("addPoints", [100])
                     base.messenger.send("drawPlayerWater", [5])
+                    taskMgr.doMethodLater(5, growPlant, "Grow normal plant")
                     plantGround.getIntoNodePath().removeNode()
                 break
