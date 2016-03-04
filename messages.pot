@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2016-03-04 01:28+CET\n"
+"POT-Creation-Date: 2016-03-04 21:38+CET\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -73,117 +73,121 @@ msgstr ""
 msgid "Exit Game"
 msgstr ""
 
-#: ./world.py:88
+#: ./world.py:68
+msgid "Use spacebar to plant seeds."
+msgstr ""
+
+#: ./world.py:91
 msgid ""
 "Fire spirits set the forest alight,\n"
 "burning most of the trees and plants..."
 msgstr ""
 
-#: ./world.py:100
+#: ./world.py:103
 msgid ""
 "Soon though rain came\n"
 "and estinguished the raging fires..."
 msgstr ""
 
-#: ./world.py:112
+#: ./world.py:115
 msgid ""
 "A devastating aftermath, it's now up to you\n"
 "to help the forest regrow!"
 msgstr ""
 
-#: ./world.py:124
+#: ./world.py:127
 msgid "Use W, A, S, D and the mouse to control the character."
 msgstr ""
 
-#: ./world.py:136
+#: ./world.py:139
 msgid "Press Home to center the camera behind the player."
 msgstr ""
 
-#: ./world.py:158
+#: ./world.py:161
 msgid "Well done little droplets, you have my greatest gratitude."
 msgstr ""
 
-#: ./world.py:170
+#: ./world.py:173
 msgid "But... now it's again time to go for you."
 msgstr ""
 
-#: ./world.py:204
+#: ./world.py:207
 msgid "You did your best and now you're one with the nature."
 msgstr ""
 
-#: ./world.py:227
+#: ./world.py:230
 msgid "You almost reached the end"
 msgstr ""
 
-#: ./world.py:229
+#: ./world.py:232
 msgid "Hi!"
 msgstr ""
 
-#: ./world.py:233
+#: ./world.py:236
 msgid "Go on, plant a seed here!"
 msgstr ""
 
-#: ./world.py:237
+#: ./world.py:240
 msgid "I'm tired, I planted to many seeds."
 msgstr ""
 
-#: ./world.py:239
+#: ./world.py:242
 msgid ""
 "Fungi 1: I hope such a fire never comes again\n"
 "Fungi 2: Me too\n"
 "Fungi 3: Do you smell the smoke o.O"
 msgstr ""
 
-#: ./world.py:241
+#: ./world.py:244
 msgid ""
 "Voice from above: Hey you there, little droplet, it's me, the creator.\n"
 "You: are you god?\n"
 "Voice from above: No, just the developer :P..."
 msgstr ""
 
-#: ./world.py:312
+#: ./world.py:315
 msgid "I'm just standing here, go away..."
 msgstr ""
 
-#: ./world.py:317
+#: ./world.py:320
 msgid "Go away, please..."
 msgstr ""
 
-#: ./world.py:322
+#: ./world.py:325
 msgid "Take some of my water but now go away, please..."
 msgstr ""
 
-#: ./world.py:333
+#: ./world.py:336
 msgid "..."
 msgstr ""
 
-#: ./world.py:338 ./world.py:339
+#: ./world.py:341 ./world.py:342
 msgid ""
 "Lonely Rock: No one ever talks to me ;(\n"
 "You: Poor little rock *pat pat*"
 msgstr ""
 
-#: ./world.py:342
+#: ./world.py:345
 msgid "Up here are no seeds, but take some of this water!"
 msgstr ""
 
-#: ./world.py:349
+#: ./world.py:352
 msgid "Up here are no seeds..."
 msgstr ""
 
-#: ./world.py:353
+#: ./world.py:356
 msgid "Awesome!"
 msgstr ""
 
-#: ./world.py:390
+#: ./world.py:393
 msgid "You got %d soul points"
 msgstr ""
 
-#: ./world.py:394
+#: ./world.py:397
 msgid "Enter World"
 msgstr ""
 
-#: ./world.py:407
+#: ./world.py:410
 msgid "Exit World"
 msgstr ""
 

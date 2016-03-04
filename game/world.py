@@ -64,6 +64,8 @@ class World(DirectObject, FSM):
         self.tutorial1 = createFadeableImage("gui/tutorial3.png", "ts-tut3")
         self.tutorialInterval = Sequence(
             Func(self.tutorial1.show),
+            Func(self.hud.showStory),
+            Func(self.hud.setStory, _("Use spacebar to plant seeds.")),
             self.tutorial1.colorScaleInterval(
                 1.5,
                 (0,0,0,1),
@@ -74,6 +76,7 @@ class World(DirectObject, FSM):
                 (0,0,0,0),
                 (0,0,0,1)),
             Func(self.tutorial1.hide),
+            Func(self.hud.hideStory),
             name="Planting Tutorial Sequence")
 
         self.intro1 = createFadeableImage("gui/intro1.png", "ts-intro1", True)

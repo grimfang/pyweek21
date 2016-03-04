@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-03-04 01:28+0100\n"
-"PO-Revision-Date: 2016-03-04 01:29+0100\n"
+"POT-Creation-Date: 2016-03-04 21:38+0100\n"
+"PO-Revision-Date: 2016-03-04 21:38+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -76,7 +76,11 @@ msgstr "Betrete Spiel"
 msgid "Exit Game"
 msgstr "Verlasse Spiel"
 
-#: world.py:88
+#: world.py:68
+msgid "Use spacebar to plant seeds."
+msgstr "Benutze die Leertaste um Samen zu pflanzen."
+
+#: world.py:91
 msgid ""
 "Fire spirits set the forest alight,\n"
 "burning most of the trees and plants..."
@@ -84,7 +88,7 @@ msgstr ""
 "Feuergeister setzten den Wald in Brand,\n"
 "die meisten Bäume und Pflanzen verbrannten..."
 
-#: world.py:100
+#: world.py:103
 msgid ""
 "Soon though rain came\n"
 "and estinguished the raging fires..."
@@ -92,7 +96,7 @@ msgstr ""
 "Bald jedoch kam regen\n"
 "und löschte die wütenden Flammen..."
 
-#: world.py:112
+#: world.py:115
 msgid ""
 "A devastating aftermath, it's now up to you\n"
 "to help the forest regrow!"
@@ -100,43 +104,43 @@ msgstr ""
 "Die Folgen waren verheerend, jetzt liegt es an dir \n"
 "zu helfen den Wald wieder aufzuforsten!"
 
-#: world.py:124
+#: world.py:127
 msgid "Use W, A, S, D and the mouse to control the character."
 msgstr "Benutze W, A, S, D und die Maus um den Charakter zu Kontrollieren."
 
-#: world.py:136
+#: world.py:139
 msgid "Press Home to center the camera behind the player."
 msgstr "Drücke Pos1 um die Kamera hinter der Spielfigur zu zentrieren."
 
-#: world.py:158
+#: world.py:161
 msgid "Well done little droplets, you have my greatest gratitude."
-msgstr "Gut gemacht kleinen Tröpfchen, ihr habt meine größte Dankbarkeit."
+msgstr "Gut gemacht ihr kleinen Tröpfchen, ihr habt meine größte Dankbarkeit."
 
-#: world.py:170
+#: world.py:173
 msgid "But... now it's again time to go for you."
 msgstr "Aber... jetzt ist es zeit für euch zu gehen."
 
-#: world.py:204
+#: world.py:207
 msgid "You did your best and now you're one with the nature."
 msgstr "Du hast dein bestes gegeben und bist jetzt eins mit der Natur."
 
-#: world.py:227
+#: world.py:230
 msgid "You almost reached the end"
-msgstr "Du hast es fast zum ende geschaft"
+msgstr "Du hast es fast zum Ende geschafft"
 
-#: world.py:229
+#: world.py:232
 msgid "Hi!"
 msgstr "Hallo!"
 
-#: world.py:233
+#: world.py:236
 msgid "Go on, plant a seed here!"
 msgstr "Los, pflanze hier eine Samen!"
 
-#: world.py:237
+#: world.py:240
 msgid "I'm tired, I planted to many seeds."
 msgstr "Ich bin müde, Ich hab zu viele Samen gepflanzt"
 
-#: world.py:239
+#: world.py:242
 msgid ""
 "Fungi 1: I hope such a fire never comes again\n"
 "Fungi 2: Me too\n"
@@ -146,7 +150,7 @@ msgstr ""
 "Pilz 2: Ich auch\n"
 "Pilz 3: Könnt ihr den Rauch riechen o.O"
 
-#: world.py:241
+#: world.py:244
 msgid ""
 "Voice from above: Hey you there, little droplet, it's me, the creator.\n"
 "You: are you god?\n"
@@ -156,23 +160,23 @@ msgstr ""
 "Du: Bist du Gott?\n"
 "Stimme von oben: Nein, nur der Entwickler :P..."
 
-#: world.py:312
+#: world.py:315
 msgid "I'm just standing here, go away..."
 msgstr "Ich steh hier nur, geh weg..."
 
-#: world.py:317
+#: world.py:320
 msgid "Go away, please..."
 msgstr "Geh weg, bitte..."
 
-#: world.py:322
+#: world.py:325
 msgid "Take some of my water but now go away, please..."
 msgstr "Nimm etwas von meinem Wasser aber jetzt geh weg, bitte..."
 
-#: world.py:333
+#: world.py:336
 msgid "..."
 msgstr "..."
 
-#: world.py:338 world.py:339
+#: world.py:341 world.py:342
 msgid ""
 "Lonely Rock: No one ever talks to me ;(\n"
 "You: Poor little rock *pat pat*"
@@ -180,27 +184,27 @@ msgstr ""
 "Einsamer Stein: Niemand spricht mit mir ;(\n"
 "Du: Armer kleiner Stein *pat pat*"
 
-#: world.py:342
+#: world.py:345
 msgid "Up here are no seeds, but take some of this water!"
 msgstr "Hier oben gibt es keine Samen, aber nimm etwas von diesem Wasser!"
 
-#: world.py:349
+#: world.py:352
 msgid "Up here are no seeds..."
 msgstr "Hier oben gibt es keine Samen..."
 
-#: world.py:353
+#: world.py:356
 msgid "Awesome!"
 msgstr "Fantastisch!"
 
-#: world.py:390
+#: world.py:393
 msgid "You got %d soul points"
 msgstr "Du hast %d Seelen Punkte"
 
-#: world.py:394
+#: world.py:397
 msgid "Enter World"
 msgstr "Betrete Welt"
 
-#: world.py:407
+#: world.py:410
 msgid "Exit World"
 msgstr "Verlasse Welt"
 

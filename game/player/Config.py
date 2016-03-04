@@ -50,7 +50,7 @@ class Config:
         # accleration for the various states
         self.accleration = 3.5
         # the speed of how fast the player deacclerates
-        self.deaccleration = 10.0
+        self.deaccleration = 16.0
         # maximum acclerations at the various states
         self.max_accleration = 8.0
         # the speed for how fast the player is generally moving

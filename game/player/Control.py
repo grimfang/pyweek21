@@ -25,6 +25,7 @@ class Control:
     def __init__(self):
         # the actual accleration the character is at
         self.current_accleration = 0.0
+        self.movementVec = Vec3(0, 0, 0)
 
     def startControl(self):
         """Start the control module"""
@@ -41,7 +42,6 @@ class Control:
             return task.cont
 
         dt = globalClock.getDt()
-        movementVec = Vec3(0, 0, 0)
         isMoving = False
         requestState = None
         accleration_mult = 1.0
@@ -52,20 +52,32 @@ class Control:
         # PLAYER MOVEMENT
         #
         if self.isDown(self.key_forward):
-            movementVec.setY(-1)
+            if self.movementVec.getY() == 1:
+                self.current_accleration /= 4.0
+            self.movementVec.setY(-1)
         elif self.isDown(self.key_backward):
-            movementVec.setY(1)
+            if self.movementVec.getY() == -1:
+                self.current_accleration /= 4.0
+            self.movementVec.setY(1)
+        else:
+            self.movementVec.setY(0)
 
         if self.isDown(self.key_left):
-            movementVec.setX(-1)
+            if self.movementVec.getX() == 1:
+                self.current_accleration /= 4.0
+            self.movementVec.setX(-1)
         elif self.isDown(self.key_right):
-            movementVec.setX(1)
+            if self.movementVec.getX() == -1:
+                self.current_accleration /= 4.0
+            self.movementVec.setX(1)
+        else:
+            self.movementVec.setX(0)
 
-        moveKeyPressed = movementVec != Vec3()
+        moveKeyPressed = self.movementVec != Vec3()
         if moveKeyPressed:
             isMoving = True
             # calculate the players heading
-            angle = math.atan2(movementVec.getX(), movementVec.getY())
+            angle = math.atan2(self.movementVec.getX(), self.movementVec.getY())
             rotation = angle * (180.0 / math.pi)
             # acclerate until we reached the maximum speed
             if self.current_accleration < self.max_accleration:
