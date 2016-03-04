@@ -1,1 +1,7 @@
-
+At some points the camera starts to shake up and down
+- Possible reasons 
+	o Odd camera configurations like min/max cam height distance to big/small)
+	o Player positioning with the foot ray floor handler thing
+inaccurate collision solids (sometimes the player model is in the ground sometimes floating above)
+- Reason
+	o To less time to justify just any collision solid to make it look good
